@@ -1,0 +1,100 @@
+\documentclass[11pt]{article}
+\newcommand{\doctag}{Student Guide}
+\input{style}
+
+\hypersetup{pdftitle={Build Log Guide for Students}}
+\title{Build Log Guide for Students}
+\author{}
+\date{}
+
+\begin{document}
+\thispagestyle{fancy}
+
+\docTitleBlock{Build Log Guide}{How to Document Your Custom Linux Distribution}
+
+\section{Why Keep a Log}
+
+You are building your own Linux distribution this semester. Along the way your team will make dozens of small decisions: which bootloader to use, how to structure your package format, what to cut when something does not work. Most of that reasoning normally disappears the moment you move on to the next problem.
+
+The log is a short, running record of those decisions. It helps your own team later in the semester when you have forgotten why you made an earlier choice, and it becomes part of the material for a paper about how students actually build a Linux distribution from scratch.
+
+This is not only for your own team's benefit. These logs are the source material your instructor draws on when writing papers and presentations about this project, and entries are attributed to your team by name. Write with that audience in mind, not only yourselves.
+
+\begin{tipBox}[If you are a graduate student]
+This carries even more direct weight for you. Work you document here may end up in a publication that becomes part of your own research record, not only a class deliverable.
+\end{tipBox}
+
+\begin{noteBox}[This is not a writing assignment]
+Entries are short, factual, and specific. Nobody is grading your prose. A few sentences per field is enough.
+\end{noteBox}
+
+\section{What to Write, and When}
+
+\begin{description}[leftmargin=2.4cm, style=nextline]
+  \item[Session entry] Write one after every work session, right after your last commit while things are still fresh. Two to five minutes.
+  \item[Milestone entry] Write one when your team reaches one of the checkpoints your instructor lists, for example your first bootable image. A bit longer than a session entry, but still short.
+  \item[Reflection] Write one at the end of the semester, once, summarizing the arc of the project.
+\end{description}
+
+\section{What Goes in a Session Entry}
+
+Use the \emph{Team Build Log Template} for this. Each session entry has the same short fields:
+
+\begin{itemize}
+  \item \textbf{Date, who was there, and time spent.} A rough estimate is fine, for example about 2 hours.
+  \item \textbf{What we worked on.} One or two sentences.
+  \item \textbf{What changed.} What is different in the build now compared to before this session.
+  \item \textbf{Decisions made, and why.} If you chose one approach over another, say what the alternative was and why you picked what you picked. This is the most useful field, so do not skip it even when the rest of the entry is brief.
+  \item \textbf{Problems encountered.} What broke, what was confusing, what took longer than expected.
+  \item \textbf{Resources or tools consulted.} What helped you get unstuck: documentation, a forum thread, a specific tool, an AI assistant. A name or link is enough.
+  \item \textbf{Next steps.} What the team plans to do next session.
+\end{itemize}
+
+\begin{tipBox}[Example entry]
+\textbf{Date:} Sept 18. \textbf{Who:} Priya, Marcus. \textbf{Time spent:} about 2 hours. \textbf{What we worked on:} Getting the kernel to boot in QEMU. \textbf{What changed:} Switched from a monolithic config to a minimal config with only the drivers we need. \textbf{Decision:} Chose a minimal config over the distro default because build times were too slow to iterate on; we can add drivers back later. \textbf{Problems:} Lost an hour to a missing initramfs step. \textbf{Resources:} The kernel config documentation, and a forum thread that explained the missing initramfs step. \textbf{Next:} Get networking working inside the VM.
+\end{tipBox}
+
+\section{Milestone Entries}
+
+At each milestone your instructor lists, write a slightly fuller entry describing the state of the project, the key decisions that got you there, and the alternatives your team considered along the way. Also note what your team learned, a concept or skill you understand better now than at the last milestone. This is different from what you worked on: it is about what clicked, not just what got done. This is the entry that ends up being the most useful for the paper, so it is worth the extra couple of minutes.
+
+\section{Submission Schedule}
+
+Your log is submitted four times over the semester, in weeks 2, 7, 11, and 17. Each submission must include every entry your team wrote since the last one, not a summary of the period.
+
+\begin{table}[H]
+\centering
+\caption{Log submission schedule and the period each submission covers.}
+\label{tab:submission-schedule}
+\begin{tabular}{@{}p{2.6cm}p{2.2cm}p{7.7cm}@{}}
+\toprule
+\textbf{Submission} & \textbf{Due} & \textbf{Covers} \\
+\midrule
+1 & Week 2 & Every entry from the start of the project through week 2 \\
+2 & Week 7 & Every entry from week 2 through week 7 \\
+3 & Week 11 & Every entry from week 7 through week 11 \\
+4 & Week 17 & Every entry from week 11 through week 17 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{What to submit.} Build your log from the provided Team Build Log Template and the shared style file, and compile it with pdflatex into a PDF. Submit both the .tex source and the compiled .pdf.
+
+\textbf{Who writes it.} Any team member can write an entry, and you are encouraged to rotate the job around the team. It does not matter who typed the words, but the whole team has to agree on what an entry says before it goes in.
+
+\textbf{Spread the work out.} Your instructor is not asking for a fixed day by day schedule within a period. The work itself should be spread across the period rather than done in one sitting near the deadline.
+
+\begin{tipBox}[What a stale log looks like]
+One long entry written the night before a submission, summarizing several weeks of work, is a sign the log went stale. A submission needs multiple entries that show the project moving forward over time, not a single snapshot at the end. If one work session covered a lot of ground, break it into a few entries across what you actually did rather than one entry that blends everything together. It is fine for a single entry to cover more than one item if those items genuinely happened together.
+\end{tipBox}
+
+\section{Ground Rules}
+
+\begin{itemize}
+  \item Write in plain language, but use it precisely. You do not need to sound formal, but do use the correct terms from computer architecture and the Unix/Linux world, for example kernel, bootloader, init system, toolchain, shared library, and package manager, rather than vague stand-ins like ``the boot thing'' or ``the compiler stuff.''
+  \item Be specific. ``Fixed the build'' is not useful later; ``fixed a missing dependency in the package build script'' is.
+  \item Log the decision, not just the outcome. Why you chose something matters more than what you chose.
+  \item Do not worry about polish. A short, honest entry is better than a long one you delay writing.
+\end{itemize}
+
+\end{document}

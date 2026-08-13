@@ -1,0 +1,139 @@
+\documentclass[11pt]{article}
+\newcommand{\doctag}{Team Log Template}
+\input{style}
+
+\hypersetup{pdftitle={Team Build Log Template}}
+\title{Team Build Log Template}
+\author{}
+\date{}
+
+\begin{document}
+\thispagestyle{fancy}
+
+\docTitleBlock{Team Build Log}{Fill-In Template}
+
+\begin{noteBox}[How to use this file]
+Duplicate the \emph{Session Entry} block below for every work session, in order. Duplicate the \emph{Milestone Snapshot} block each time your team reaches one of the checkpoints your instructor lists. Fill in the \emph{Reflection} section once, at the end of the semester. Replace bracketed text with your own words and delete these instructions once your team is comfortable with the format.
+\end{noteBox}
+
+\section{Team Information}
+
+\begin{fillBox}
+\textbf{Team name:} [team name] \\
+\textbf{Team members:} [names] \\
+\textbf{Distribution name:} [name of the distro you are building] \\
+\textbf{Repository link:} [link]
+\end{fillBox}
+
+\section{Session Log}
+
+Entries accumulate toward your next submission, due at weeks 2, 7, 11, and 17. Spread entries across the period rather than writing one at the last minute, see the Submission Tracker near the end of this file for the full schedule.
+
+\begin{tipBox}[Example entry (for reference)]
+\textbf{Date:} Sept 18 \quad \textbf{Present:} Priya, Marcus \quad \textbf{Time spent:} about 2 hours \\
+\textbf{What we worked on:} Getting the kernel to boot in QEMU. \\
+\textbf{What changed:} Switched from a monolithic config to a minimal config with only the drivers we need. \\
+\textbf{Decisions made, and why:} Chose a minimal config over the distro default because build times were too slow to iterate on. We can add drivers back later. \\
+\textbf{Problems encountered:} Lost an hour to a missing initramfs step. \\
+\textbf{Resources or tools consulted:} The kernel config documentation, and a forum thread that explained the missing initramfs step. \\
+\textbf{Next steps:} Get networking working inside the VM.
+\end{tipBox}
+
+\begin{fillBox}[Session Entry]
+\textbf{Date:} [date] \quad \textbf{Present:} [names] \quad \textbf{Time spent:} [rough hours] \\
+\textbf{What we worked on:} [one or two sentences] \\
+\textbf{What changed:} [what is different in the build now] \\
+\textbf{Decisions made, and why:} [the choice, the alternative you considered, and why you picked what you picked] \\
+\textbf{Problems encountered:} [what broke or took longer than expected] \\
+\textbf{Resources or tools consulted:} [docs, forum threads, a specific tool, an AI assistant, and so on] \\
+\textbf{Next steps:} [what you plan to do next session]
+\end{fillBox}
+
+\begin{fillBox}[Session Entry]
+\textbf{Date:} [date] \quad \textbf{Present:} [names] \quad \textbf{Time spent:} [rough hours] \\
+\textbf{What we worked on:} [one or two sentences] \\
+\textbf{What changed:} [what is different in the build now] \\
+\textbf{Decisions made, and why:} [the choice, the alternative you considered, and why you picked what you picked] \\
+\textbf{Problems encountered:} [what broke or took longer than expected] \\
+\textbf{Resources or tools consulted:} [docs, forum threads, a specific tool, an AI assistant, and so on] \\
+\textbf{Next steps:} [what you plan to do next session]
+\end{fillBox}
+
+\begin{tipBox}[Adding more entries]
+Copy one of the \texttt{fillBox} blocks above, from \texttt{\textbackslash begin\{fillBox\}[Session Entry]} to \texttt{\textbackslash end\{fillBox\}}, and paste it here for your next session.
+\end{tipBox}
+
+\section{Milestone Snapshots}
+
+Fill in one block below each time your team reaches a milestone your instructor lists. This entry can be a little longer than a session entry.
+
+\begin{fillBox}[Milestone Snapshot]
+\textbf{Milestone:} [milestone name] \quad \textbf{Date reached:} [date] \\
+\textbf{Description:} [state of the project at this point] \\
+\textbf{Key decisions and alternatives considered:} [what you chose, what else you considered, and why] \\
+\textbf{What we learned:} [a concept or skill the team understands better now than at the last milestone] \\
+\textbf{Evidence:} [link to commit, image, screenshot, or log output]
+\end{fillBox}
+
+\section{Milestone Tracker}
+
+\begin{table}[H]
+\centering
+\caption{Team milestone tracker. Fill in the date reached as you go.}
+\label{tab:milestone-tracker}
+\begin{tabular}{@{}p{4.2cm}p{2.4cm}p{5.9cm}@{}}
+\toprule
+\textbf{Milestone} & \textbf{Date Reached} & \textbf{Notes} \\
+\midrule
+Toolchain and build environment working & & \\
+First bootable image & & \\
+Working package manager or format & & \\
+Custom init system or service management & & \\
+Feature freeze and stabilization & & \\
+Final review and handoff & & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Submission Tracker}
+
+Your log is submitted four times over the semester. Each submission must include every entry your team wrote since the last one.
+
+\begin{table}[H]
+\centering
+\caption{Submission tracker. Fill in the date submitted as you go.}
+\label{tab:submission-tracker}
+\begin{tabular}{@{}p{2.6cm}p{2.2cm}p{2.6cm}p{4.9cm}@{}}
+\toprule
+\textbf{Submission} & \textbf{Due} & \textbf{Submitted} & \textbf{Notes} \\
+\midrule
+1 & Week 2 & & \\
+2 & Week 7 & & \\
+3 & Week 11 & & \\
+4 & Week 17 & & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{End of Semester Reflection}
+
+Fill this in once, near the end of the semester. A short paragraph per question is enough.
+
+\begin{fillBox}[Reflection]
+\textbf{What is your distribution, in a few sentences, and what makes it yours?} \\
+{[answer]}
+
+\vspace{4pt}
+\textbf{Which decisions had the biggest impact on the final result, and why?} \\
+{[answer]}
+
+\vspace{4pt}
+\textbf{What would your team do differently if you started over?} \\
+{[answer]}
+
+\vspace{4pt}
+\textbf{What is still unfinished or known to be fragile?} \\
+{[answer]}
+\end{fillBox}
+
+\end{document}

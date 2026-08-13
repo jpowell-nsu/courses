@@ -1,0 +1,87 @@
+% ---- Shared style: colors, fonts, headings, boxes ----
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{charter}
+\usepackage[a4paper,margin=1in,headheight=22pt]{geometry}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{array}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+% Palette. Text-carrying shades meet WCAG 2.1 AA against white
+% (navy 14.2:1, teal 6.9:1, amber 4.7:1 for normal text).
+% Light tints are used only as decorative box fills, never as text color.
+\definecolor{navy}{HTML}{1B2A4A}
+\definecolor{teal}{HTML}{146464}
+\definecolor{amber}{HTML}{9C6B00}
+\definecolor{tealtint}{HTML}{E7F2F2}
+\definecolor{ambertint}{HTML}{FBF1DC}
+\definecolor{rulegray}{HTML}{B9C2CE}
+
+% Headings
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{navy}}
+  {\thesection}{0.6em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{teal}}
+  {\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}
+  {\normalfont\bfseries\color{amber}}
+  {\thesubsubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{1.4em}{0.6em}
+\titlespacing*{\subsection}{0pt}{1.1em}{0.4em}
+
+% Header / footer: running title only, no page numbers
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{rulegray}\leaders\hrule height \headrulewidth\hfill}}
+\fancyhead[L]{\small\color{navy}\textsc{\doctag}}
+\fancyhead[R]{\small\color{navy}\textsc{Custom Linux Distro Project}}
+
+% Callout boxes
+\newtcolorbox{noteBox}[1][]{
+  colback=tealtint, colframe=teal, boxrule=0.6pt, arc=2pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  fonttitle=\bfseries\color{white}, coltitle=white,
+  colbacktitle=teal, title=#1, breakable
+}
+\newtcolorbox{tipBox}[1][]{
+  colback=ambertint, colframe=amber, boxrule=0.6pt, arc=2pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  fonttitle=\bfseries\color{white}, coltitle=white,
+  colbacktitle=amber, title=#1, breakable
+}
+\newtcolorbox{fillBox}[1][]{
+  colback=white, colframe=rulegray, boxrule=0.6pt, arc=2pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  fonttitle=\bfseries\color{navy}, coltitle=navy,
+  colbacktitle=white, coltitle=navy,
+  title=#1, breakable, boxrule=0.8pt
+}
+
+% Title block command (no titlepage, keeps document short)
+\newcommand{\docTitleBlock}[2]{
+  {\color{navy}\Huge\bfseries #1}\par
+  \vspace{2pt}
+  {\color{teal}\large #2}\par
+  \vspace{4pt}
+  {\color{rulegray}\rule{\linewidth}{1pt}}
+  \vspace{10pt}
+}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=teal,
+  urlcolor=teal,
+  citecolor=teal,
+  pdflang={en-US}
+}
