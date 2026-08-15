@@ -1,0 +1,146 @@
+% ============================================================
+% Lab W1 -- SUBMISSION TEMPLATE
+%
+% This is a template, not the assignment itself. It mirrors the
+% structure of Lab W1 (labw1-intro-setup.tex) so you can fill in
+% your group's answers directly here and submit this file (plus
+% the PDF it produces).
+%
+% HOW TO USE THIS FILE:
+%   1. Keep this file in the same folder as coa-accessible.sty
+%      (the same folder the Lab W1 PDF and .tex file came in).
+%   2. Replace anything that says [Type your answer here.] with
+%      your actual answer, then delete the italics if you want.
+%   3. Compile with pdflatex TWICE in a row. The first run writes
+%      the page-count information, the second run reads it back in
+%      so "Page X of Y" is correct. If you are using an editor like
+%      Overleaf or TeXstudio, it usually does this for you
+%      automatically when you click "build" or "recompile."
+%
+% Lines starting with a percent sign, like this one, are comments.
+% LaTeX ignores everything after a % on a line, so comments never
+% show up in your PDF. Feel free to delete these tip comments once
+% you don't need them anymore, or just leave them; they are harmless.
+% ============================================================
+\documentclass[11pt]{article}
+\usepackage{coa-accessible}
+
+% This line sets the title that appears at the top of the PDF and
+% in the document's metadata. The first {...} is the main title,
+% the second {...} is the smaller line underneath it.
+\AssignmentMeta{Lab W1 Submission: Environment Setup}{Group submission template}
+
+\begin{document}
+\AssignmentTitleBlock
+% Note: this template intentionally skips the "AI note" and
+% "Resources note" boxes that appear on the assignment sheet.
+% Those describe how the assignment itself was written; this file
+% is your own work, so they do not apply here.
+
+\section*{Group members}
+% LaTeX TIP: \begin{itemize} ... \end{itemize} makes a bulleted
+% list. Each \item is one bullet point. Replace the bracketed text
+% below with your actual names.
+%
+% One LaTeX quirk worth knowing: if \item is immediately followed
+% by a square bracket, like \item [text], LaTeX assumes you are
+% giving that item a custom label instead of a bullet, and the
+% bullet disappears. That is why the brackets below are written as
+% {[} and {]} instead of plain [ and ]; wrapping them in braces
+% tells LaTeX "this is just a character," not "here comes an
+% option." You will only need this trick when a line happens to
+% start with a square bracket right after \item.
+\begin{itemize}
+  \item {[}Type name here.{]}
+  \item {[}Type name here.{]}
+  \item {[}Type name here.{]}
+  \item {[}Type name here.{]}
+\end{itemize}
+
+\section{Part A -- QEMU checklist}
+% LaTeX TIP: this table environment was already built for you in
+% coa-accessible.sty, so you do not need to know how tables work
+% yet to use it. Just edit the text between the & symbols. Each &
+% moves to the next column, and \\ ends a row. Type Yes or No (or
+% a short note) in the second column for each row.
+\begin{accessibletable}{Part A checklist}{tab:parta-submission}{p{0.65\linewidth}p{0.25\linewidth}}
+\toprule
+Checklist item & Confirmed by all 4? \\
+\midrule
+QEMU installed and \texttt{qemu-system-x86\_64 --version} runs & [Yes/No] \\
+AArch64 cross-compiler installed & [Yes/No] \\
+Native hello-world compiles and runs & [Yes/No] \\
+Cross-compiled AArch64 hello-world runs under QEMU & [Yes/No] \\
+\bottomrule
+\end{accessibletable}
+
+\section{Part B -- Raspberry Pi output}
+Paste your \texttt{uname -m} output below.
+% LaTeX TIP: the lstlisting environment below displays text in a
+% monospace font with a box around it, exactly as typed, which is
+% perfect for pasting terminal output. Do not put % comment
+% characters inside it; everything between \begin and \end is
+% shown exactly as-is.
+\begin{lstlisting}
+[Paste your uname -m output here.]
+\end{lstlisting}
+
+Paste the relevant line(s) from \texttt{cat /proc/cpuinfo} below (the
+\texttt{model name} or \texttt{Hardware} field is enough, you do not need
+the whole file).
+\begin{lstlisting}
+[Paste your /proc/cpuinfo output here.]
+\end{lstlisting}
+
+\section{Screenshots}
+% LaTeX TIP: \accessiblefigure{file}{width}{caption}{label} inserts
+% an image. The steps below are commented out (each line starts
+% with %) so this template compiles cleanly even before you add
+% your screenshots. To use them:
+%   1. Save your screenshots as .png or .jpg files in this same
+%      folder, and give them short names with no spaces, for
+%      example qemu-setup.png and pi-setup.png.
+%   2. Delete the % at the start of the \accessiblefigure lines
+%      below.
+%   3. Change the file name in the first {} to match your actual
+%      file, and edit the caption text (the third {}) to describe
+%      what the screenshot shows. That caption doubles as
+%      alt text, so make it genuinely descriptive.
+
+% \accessiblefigure{qemu-setup.png}{0.8\linewidth}{Terminal output showing the cross-compiled AArch64 hello-world program running successfully under QEMU.}{fig:qemu}
+
+% \accessiblefigure{pi-setup.png}{0.8\linewidth}{Terminal output showing uname -m and the hello-world program running natively on the Raspberry Pi.}{fig:pi}
+
+[If you have not added your screenshot files yet, leave a short note
+here about what you still need to attach.]
+
+\section{Part C -- Reflection}
+% LaTeX TIP: \begin{enumerate} ... \end{enumerate} makes a numbered
+% list instead of a bulleted one. The question text is left in
+% place below so it stays clear which answer is which; type your
+% answer right after each question.
+\begin{enumerate}
+  \item What did \texttt{uname -m} report on the Raspberry Pi, and what does
+        that string actually name?
+
+        \textit{[Type your answer here.]}
+  \item You cross-compiled for AArch64 on your laptop in Part A but compiled
+        natively on the Pi in Part B. In your own words, why does a
+        cross-compiler exist at all? What problem does it solve that a
+        regular compiler cannot?
+
+        \textit{[Type your answer here.]}
+  \item QEMU let you run an AArch64 binary on an x86-64 laptop. Based on what
+        you observed, what do you think QEMU is actually doing to make that
+        possible?
+
+        \textit{[Type your answer here.]}
+\end{enumerate}
+
+\section*{Anything that did not work}
+If any step did not work for someone in the group, describe what you tried
+here. If everything worked, you can leave this section as-is or delete it.
+
+\textit{[Type your answer here, or delete this section.]}
+
+\end{document}
