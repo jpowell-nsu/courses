@@ -1,0 +1,136 @@
+\documentclass[11pt,letterpaper]{article}
+
+% ---------- Language and encoding (accessibility metadata) ----------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+% ---------- Layout ----------
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\setlength{\parindent}{0pt}
+
+% ---------- Color palette (navy / teal / amber, contrast-checked) ----------
+\usepackage[table]{xcolor}
+\definecolor{navy}{RGB}{20,33,61}        % headings, table header fill; contrast vs white ~16:1
+\definecolor{tealink}{RGB}{0,77,79}      % hyperlinks and small text; contrast vs white ~9.7:1
+\definecolor{tealaccent}{RGB}{0,121,124} % large/bold subheading accent; contrast vs white ~5.2:1
+\definecolor{amberaccent}{RGB}{200,120,0} % large/bold accents only (>=3:1); not for small text
+\definecolor{lightrow}{RGB}{244,247,247}
+
+% ---------- Lists, tables, captions ----------
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.4em, itemsep=5pt, topsep=3pt, parsep=0pt}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{caption}
+\captionsetup{labelfont={bf,color=navy}, font=small, skip=6pt}
+
+% ---------- Section styling (real heading hierarchy) ----------
+\usepackage{titlesec}
+\titleformat{\section}{\normalfont\Large\bfseries\color{navy}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries\color{tealaccent}}{\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{1.4em}{0.7em}
+\titlespacing*{\subsection}{0pt}{1.1em}{0.5em}
+
+% ---------- Hyperlinks and PDF metadata ----------
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+  pdftitle={CompTIA Security+ (SY0-701) Student Resource Guide},
+  pdflang={en-US},
+  colorlinks=true,
+  linkcolor=navy,
+  urlcolor=tealink,
+  citecolor=tealink,
+  bookmarksopen=true,
+  bookmarksnumbered=true
+}
+
+% ---------- Page numbers: "Page X of Y", no other header/footer content ----------
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[C]{\small\color{navy}Page \thepage\ of \pageref{LastPage}}
+
+\title{\color{navy}\textbf{CompTIA Security+ (SY0-701)\\Student Resource Guide}}
+\date{}
+\author{}
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+\section*{About This Guide}
+This guide collects free and paid resources for the CompTIA Security+ (SY0-701) portion of the course. Items are grouped by type so that a study plan can pull from each category: official CompTIA materials, video instruction, hands-on practice, books, practice tests, flashcards, and community support. Each entry includes a one-line description and a link.
+
+\section{Exam Snapshot}
+The table below summarizes the five domains measured on the SY0-701 exam and their approximate weight, based on CompTIA's published exam objectives.
+
+\begin{table}[htbp]
+\centering
+\caption{SY0-701 exam domains and weighting}
+\begin{tabular}{@{}p{0.72\linewidth}r@{}}
+\toprule
+\rowcolor{navy}
+\textcolor{white}{\textbf{Domain}} & \textcolor{white}{\textbf{Weight}} \\
+\midrule
+1.0 General Security Concepts & 12\% \\
+\rowcolor{lightrow} 2.0 Threats, Vulnerabilities, and Mitigations & 22\% \\
+3.0 Security Architecture & 18\% \\
+\rowcolor{lightrow} 4.0 Security Operations & 28\% \\
+5.0 Security Program Management and Oversight & 20\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The exam allows a maximum of 90 multiple-choice and performance-based questions in 90 minutes, and requires a scaled score of 750 out of 900 to pass.
+
+\section{Official CompTIA Resources}
+\begin{itemize}
+\item \textbf{\href{https://www.comptia.org/en/certifications/security/}{CompTIA Security+ Certification Page}} -- Official exam details, the current exam objectives download, and an overview of CompTIA's own study products.
+\item \textbf{CompTIA CertMaster Learn, Practice, and Labs} (linked from the certification page above) -- Official self-paced eBook, adaptive practice questions, and browser-based hands-on labs mapped to every objective.
+\end{itemize}
+
+\section{Free Video Instruction}
+\begin{itemize}
+\item \textbf{\href{https://www.professormesser.com/sy0-701-certification-course/}{Professor Messer SY0-701 Certification Course}} -- A complete, free video course (about 15 hours) with downloadable course notes, a live monthly Q\&A study group, and 24/7 study chat rooms.
+\item \textbf{\href{https://www.professormesser.com/sy0-701-secplus-resources/}{Professor Messer SY0-701 Study Resources}} -- Professor Messer's own curated page of companion materials for the free course.
+\item \textbf{\href{https://academy.hackthebox.com/path/preview/comptia-security-preparation}{HTB Academy: CompTIA Security+ Preparation Path}} -- Guided, scenario-based modules that reinforce the same foundational concepts through hands-on exercises.
+\end{itemize}
+
+\section{Paid Video Courses and Bootcamps}
+\begin{itemize}
+\item \textbf{\href{https://www.udemy.com/course/securityplus/}{Jason Dion: CompTIA Security+ (SY0-701) Complete Course \& Practice Exam (Udemy)}} -- Full lecture course with a downloadable study guide and built-in practice questions.
+\item \textbf{Professor Messer Security+ Success Bundle} (linked from the free course page above) -- Downloadable course notes and bundled practice exams that extend the free video course.
+\end{itemize}
+
+\section{Books and Study Guides}
+\begin{itemize}
+\item \textbf{\href{https://www.amazon.com/Meyers-CompTIA-Security-Certification-SY0-701/dp/1265684189}{Mike Meyers' CompTIA Security+ Certification Guide, 4th Edition}} -- A widely used all-in-one guide with review questions built into every module.
+\item \textbf{\href{https://www.wiley.com/en-us/CompTIA+Security++Study+Guide+with+over+500+Practice+Test+Questions:+Exam+SY0-701,+9th+Edition-p-9781394211418}{CompTIA Security+ Study Guide, 9th Edition, Mike Chapple and David Seidl (Sybex/Wiley)}} -- A comprehensive text that includes a year of access to an online test bank and flashcards.
+\item \textbf{\href{https://www.amazon.com/CompTIA-Security-Get-Certified-Ahead/dp/B0CMZC4YRR}{Get Certified Get Ahead: SY0-701 Study Guide, Darril Gibson and Joe Shelley}} -- A reader-favorite guide known for plain-language explanations and end-of-chapter practice questions.
+\end{itemize}
+
+\section{Practice Tests and Question Banks}
+\begin{itemize}
+\item \textbf{\href{https://www.udemy.com/course/comptia-security-sy0-701-practice-exams/}{Jason Dion Practice Exams, Set 1 (Udemy)}} -- Six timed, 90-question mock exams aligned to the current exam objectives.
+\item \textbf{\href{https://www.udemy.com/course/comptia-security-sy0-701-practice-exams-2nd-edition/}{Jason Dion Practice Exams, Set 2 (Udemy)}} -- A second, independent set of six timed mock exams for additional repetition.
+\item \textbf{\href{https://www.examcompass.com/comptia-security-plus-practice-test-1-exam-sy0-701}{ExamCompass Free Practice Test}} -- No-cost, no-signup practice questions with instant scoring.
+\item \textbf{\href{https://certblaster.com/free-security-sy0-701-practice-test/}{CertBlaster Free SY0-701 Practice Test}} -- Free scenario-based questions organized by exam domain.
+\end{itemize}
+
+\section{Flashcards and Quick Review}
+\begin{itemize}
+\item \textbf{Professor Messer SY0-701 Course Notes PDF} (available from the course page above) -- A printable, 96-page summary of every video, organized by exam objective.
+\item \textbf{Quizlet} -- Search Quizlet directly for "CompTIA Security+ SY0-701" to find student-built flashcard sets for last-minute acronym and term review.
+\end{itemize}
+
+\section{Community and Support}
+\begin{itemize}
+\item \textbf{\href{https://www.reddit.com/r/CompTIA/}{r/CompTIA on Reddit}} -- An active community for exam-day questions, study-plan advice, and pass-rate discussion.
+\item \textbf{Professor Messer Live Study Group and Chat} (linked from the course page above) -- Free monthly Q\&A sessions and always-on discussion rooms for Security+ learners.
+\end{itemize}
+
+\end{document}
