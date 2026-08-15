@@ -1,0 +1,131 @@
+\documentclass[11pt,letterpaper]{article}
+
+% ---------- Language and encoding (accessibility metadata) ----------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+% ---------- Layout ----------
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\setlength{\parindent}{0pt}
+
+% ---------- Color palette (navy / teal / amber, contrast-checked) ----------
+\usepackage[table]{xcolor}
+\definecolor{navy}{RGB}{20,33,61}        % headings, table header fill; contrast vs white ~16:1
+\definecolor{tealink}{RGB}{0,77,79}      % hyperlinks and small text; contrast vs white ~9.7:1
+\definecolor{tealaccent}{RGB}{0,121,124} % large/bold subheading accent; contrast vs white ~5.2:1
+\definecolor{amberaccent}{RGB}{200,120,0} % large/bold accents only (>=3:1); not for small text
+\definecolor{lightrow}{RGB}{244,247,247}
+
+% ---------- Lists, tables, captions ----------
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.4em, itemsep=5pt, topsep=3pt, parsep=0pt}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{caption}
+\captionsetup{labelfont={bf,color=navy}, font=small, skip=6pt}
+
+% ---------- Section styling (real heading hierarchy) ----------
+\usepackage{titlesec}
+\titleformat{\section}{\normalfont\Large\bfseries\color{navy}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries\color{tealaccent}}{\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{1.4em}{0.7em}
+\titlespacing*{\subsection}{0pt}{1.1em}{0.5em}
+
+% ---------- Hyperlinks and PDF metadata ----------
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+  pdftitle={CompTIA CySA+ (CS0-004) Student Resource Guide},
+  pdflang={en-US},
+  colorlinks=true,
+  linkcolor=navy,
+  urlcolor=tealink,
+  citecolor=tealink,
+  bookmarksopen=true,
+  bookmarksnumbered=true
+}
+
+% ---------- Page numbers: "Page X of Y", no other header/footer content ----------
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[C]{\small\color{navy}Page \thepage\ of \pageref{LastPage}}
+
+\title{\color{navy}\textbf{CompTIA CySA+ (CS0-004)\\Student Resource Guide}}
+\date{}
+\author{}
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+\section*{About This Guide}
+This guide collects resources for the CompTIA Cybersecurity Analyst (CySA+) portion of the course. CySA+ is an intermediate certification that builds on Security+, so this list includes a note on the exam version change, official materials, free study resources, hands-on practice, books, practice tests, and community support. Each entry includes a one-line description and a link.
+
+\section{Exam Snapshot}
+CompTIA launched CySA+ V4 (exam code CS0-004) on June 23, 2026. The previous version, CS0-003, is being phased out, with the English-language exam retiring December 22, 2026. Students starting preparation now should study CS0-004 material. The table below summarizes the four domains measured on CS0-004 and their weight.
+
+\begin{table}[htbp]
+\centering
+\caption{CS0-004 exam domains and weighting}
+\begin{tabular}{@{}p{0.72\linewidth}r@{}}
+\toprule
+\rowcolor{navy}
+\textcolor{white}{\textbf{Domain}} & \textcolor{white}{\textbf{Weight}} \\
+\midrule
+1.0 Security Operations & 34\% \\
+\rowcolor{lightrow} 2.0 Vulnerability Management & 26\% \\
+3.0 Incident Response and Management & 24\% \\
+\rowcolor{lightrow} 4.0 Reporting and Communication & 16\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The exam allows a maximum of 85 multiple-choice and performance-based questions in 165 minutes, and requires a scaled score of 750 out of 900 to pass. CompTIA recommends roughly four years of hands-on experience as a SOC or vulnerability analyst, or Security+ plus equivalent experience, before attempting CySA+.
+
+\section{Official CompTIA Resources}
+\begin{itemize}
+\item \textbf{\href{https://www.comptia.org/en-us/certifications/cybersecurity-analyst/}{CompTIA CySA+ Certification Page}} -- Official landing page for CySA+ V4 (CS0-004), with the current exam objectives download and CertMaster product links.
+\item \textbf{CompTIA CertMaster Learn, Practice, and Labs (CS0-004)} (linked from the certification page above) -- Official self-paced courseware, adaptive practice questions, and hands-on labs aligned to the current exam.
+\end{itemize}
+
+\section{Free Study Resources}
+\begin{itemize}
+\item \textbf{\href{https://certmike.com/csaplus/}{CertMike CySA+ Study Group}} -- Free weekly coaching emails from Sybex study guide author Mike Chapple, plus a free Last Minute Review Guide summarizing all four domains.
+\item \textbf{\href{https://academy.hackthebox.com/path/preview/soc-analyst}{HTB Academy: SOC Analyst Job-Role Path}} -- HTB's blue-team path; free introductory modules cover SIEM, traffic analysis, and DFIR skills that overlap heavily with the CySA+ domains.
+\end{itemize}
+
+\section{Hands-On Practice}
+\begin{itemize}
+\item \textbf{\href{https://tryhackme.com/path/outline/soclevel1}{TryHackMe: SOC Level 1 Path}} -- A free, recently revamped path covering SIEM, EDR, and SOAR concepts through guided alert-triage labs.
+\item \textbf{HTB Certified Defensive Security Analyst (CDSA)} (via the SOC Analyst path above) -- A practical, hands-on certification covering the same security-operations and incident-handling skills tested by CySA+, useful as parallel lab practice.
+\end{itemize}
+
+\section{Paid Video Courses and Bootcamps}
+\begin{itemize}
+\item \textbf{\href{https://www.udemy.com/course/comptia-cysa-003/}{Jason Dion: CompTIA CySA+ (CS0-004) Complete Course \& Practice Exam (Udemy)}} -- Full lecture course aligned to the current exam, with a downloadable study guide, section quizzes, and a full-length practice exam.
+\item \textbf{Mike Chapple's CySA+ Video Training Series (LinkedIn Learning)} (linked from the CertMike study group above) -- A complete video course from the author of the official Sybex study guide, available with a LinkedIn Learning free trial.
+\end{itemize}
+
+\section{Books and Study Guides}
+\begin{itemize}
+\item \textbf{\href{https://www.wiley.com/en-us/comptia-cysa-study-guide-exam-cs0-004-4th-edition-p-9781394414895}{CompTIA CySA+ Study Guide, 4th Edition (CS0-004), Mike Chapple and David Seidl (Sybex/Wiley)}} -- The current edition of the leading study guide, with chapter review questions and a year of online test bank access.
+\item \textbf{\href{https://www.amazon.com/CompTIA-CySA-Practice-Tests-CS0-004/dp/1394414471}{CompTIA CySA+ Practice Tests, 4th Edition (CS0-004), Mike Chapple and David Seidl (Sybex/Wiley)}} -- A companion volume of domain-organized practice questions and two full comprehensive exams.
+\end{itemize}
+
+\section{Practice Tests and Question Banks}
+\begin{itemize}
+\item \textbf{\href{https://flashgenius.net/blog-article/ultimate-guide-to-comptia-cysa-certification}{FlashGenius Free CySA+ CS0-004 Practice Test}} -- Over 200 free, no-signup practice questions covering all four current domains, with explanations.
+\item \textbf{CompTIA CertMaster Practice (CS0-004)} (linked from the certification page above) -- Official adaptive practice questions that track readiness by domain.
+\end{itemize}
+
+\section{Community and Support}
+\begin{itemize}
+\item \textbf{\href{https://www.reddit.com/r/CompTIA/}{r/CompTIA on Reddit}} -- An active community for exam-day questions, study-plan advice, and discussion of the CS0-003-to-CS0-004 transition.
+\item \textbf{\href{https://discord.com/invite/hackthebox}{Official HTB Discord Server}} -- Useful for questions on the SOC Analyst path modules used as hands-on practice above.
+\end{itemize}
+
+\end{document}
