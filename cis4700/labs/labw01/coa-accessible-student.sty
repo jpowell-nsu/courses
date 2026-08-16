@@ -1,0 +1,256 @@
+% ============================================================
+% coa-accessible-student.sty
+% Student-facing variant of coa-accessible.sty: identical, except
+% the \AIDisclaimer macro (and its explanatory comment block) has
+% been removed. Use this for student-facing documents, such as
+% answer sheets, that should not carry that note.
+%
+% Target: WCAG 2.1 Level AA, best effort (institution standard).
+% This file produces clean, well structured LaTeX source. The
+% instructor auto-tags the exported PDF in Adobe Acrobat and
+% handles table tagging there, so the job of this file is to make
+% that pass easy: real heading hierarchy, captioned tables and
+% figures, no color-only distinctions, and correct document
+% metadata (title, language).
+%
+% Usage in a student-facing file:
+%   \documentclass[11pt]{article}
+%   \usepackage{coa-accessible-student}
+%   \AssignmentMeta{<Full document title>}{<Week N>}
+%   \begin{document}
+%   ...
+% ============================================================
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{coa-accessible-student}[2026/08/11 v1.0 COA course accessible style, student variant]
+
+% ---------- Language and encoding (also drives PDF /Lang) ----------
+\RequirePackage[english]{babel}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage{lmodern}          % clean, screen- and print-legible font
+
+% ---------- Page geometry ----------
+\RequirePackage[margin=1in]{geometry}
+
+% ---------- Core packages ----------
+\RequirePackage{xcolor}
+\RequirePackage{array}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\RequirePackage{booktabs}
+\RequirePackage{longtable}
+\RequirePackage{enumitem}
+\RequirePackage{graphicx}
+\RequirePackage{csquotes}
+\RequirePackage{titlesec}
+\RequirePackage[hang,small,labelfont=bf]{caption}
+\RequirePackage{fancyhdr}
+\RequirePackage{lastpage}
+\RequirePackage{listings}         % for assembly / C code listings
+
+% ============================================================
+% COLOR PALETTE
+% Navy, teal, and amber are kept as the course scheme. The shades
+% used for SMALL TEXT are darkened to clear 4.5:1 contrast against
+% white. Large or bold text (18pt+, or 14pt+ bold) only needs 3:1,
+% so a lighter shade is offered for that case. Do not use the
+% light "accent" shades for body text or table cell text.
+%
+% NOTE ON AMBER: bright amber (#FFC107-family) fails small-text
+% contrast badly (about 1.6:1 on white). To hit 4.5:1 it has to
+% shift quite far toward a dark gold/brown (#8A5A00). This is a
+% real visual change from "bright amber," not just a tweak, so it
+% is called out here rather than applied silently. See the note
+% sent alongside this file.
+% ============================================================
+
+% --- Navy: safe as-is for text at any size (~14:1 on white) ---
+\definecolor{coaNavy}{HTML}{1B2A4A}
+
+% --- Teal: darkened variant for small text / links (~6.8:1) ---
+\definecolor{coaTealText}{HTML}{006666}
+% --- Teal: lighter variant, large/bold headings or graphic fills only (~4.8:1) ---
+\definecolor{coaTealAccent}{HTML}{008080}
+
+% --- Amber: darkened variant for small text / table highlights (~5.9:1) ---
+\definecolor{coaAmberText}{HTML}{8A5A00}
+% --- Amber: mid variant, large/bold text only, 18pt+ (~3.3:1) ---
+\definecolor{coaAmberLarge}{HTML}{B8860B}
+% --- Amber: original bright accent, DECORATIVE / non-text use only ---
+\definecolor{coaAmberDecorative}{HTML}{FFC107}
+
+\definecolor{coaBodyText}{HTML}{1A1A1A}   % near-black body text, ~15.7:1
+
+% ============================================================
+% HEADING HIERARCHY
+% Real \section / \subsection / \subsubsection structure so the
+% tagged PDF gets a correct H1/H2/H3 outline. Sizes stay well
+% above the 18pt / 14pt-bold thresholds wherever color is used.
+% ============================================================
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{coaNavy}}
+  {\thesection}{0.6em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{coaTealAccent}}
+  {\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries\color{coaAmberLarge}}
+  {\thesubsubsection}{0.6em}{}
+
+\titlespacing*{\section}{0pt}{1.4em}{0.8em}
+\titlespacing*{\subsection}{0pt}{1.1em}{0.6em}
+\titlespacing*{\subsubsection}{0pt}{1em}{0.5em}
+
+% No manual \newpage between sections is used anywhere in this
+% style or in the assignment files that use it; pagination is left
+% to LaTeX's natural flow.
+
+% ============================================================
+% TABLE AND FIGURE CAPTIONS
+% Table captions above the table, figure captions below, per
+% common accessibility guidance so a screen reader user gets the
+% caption before the table content and after the image content.
+% ============================================================
+\captionsetup[table]{position=top,skip=6pt,font=small,labelfont={bf,color=coaNavy}}
+\captionsetup[figure]{position=bottom,skip=6pt,font=small,labelfont={bf,color=coaNavy}}
+
+% Convenience environment for a simple accessible table: booktabs
+% rules only (no vertical rules, no merged/split cells), caption
+% required, label required. Use like:
+%   \begin{accessibletable}{My caption}{tab:mylabel}{ll}
+%   \toprule Header A & Header B \\ \midrule
+%   Row 1a & Row 1b \\ \bottomrule
+%   \end{accessibletable}
+\newenvironment{accessibletable}[3]{%
+  \begin{table}[htbp]
+  \centering
+  \caption{#1}
+  \label{#2}
+  \begin{tabular}{#3}
+}{%
+  \end{tabular}
+  \end{table}
+}
+
+% Reminder command for figures: forces the author to supply
+% caption text, which doubles as the alt-text source when the
+% instructor tags the PDF in Acrobat.
+% Usage: \accessiblefigure{path}{width}{Caption / alt text}{label}
+\newcommand{\accessiblefigure}[4]{%
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=#2]{#1}
+    \caption{#3}
+    \label{#4}
+  \end{figure}
+}
+
+% For purely decorative graphics only (no informational content).
+% Marked clearly in source so it is easy to flag as an artifact
+% (skip alt text) during Acrobat tagging.
+\newcommand{\decorativefigure}[2]{%
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=#2]{#1}
+    % DECORATIVE IMAGE -- no caption by design; mark as Artifact in Acrobat tagging.
+  \end{figure}
+}
+
+% ============================================================
+% CODE / ASSEMBLY LISTINGS
+% Used for x86 (NASM/GAS) and ARM assembly, and C reference code.
+% High-contrast, no color-only meaning (keywords are bold AND
+% colored), monospace font, line numbers for easy reference in
+% questions.
+% ============================================================
+\lstdefinestyle{coaAsm}{
+  basicstyle=\ttfamily\small\color{coaBodyText},
+  keywordstyle=\bfseries\color{coaNavy},
+  commentstyle=\itshape\color{coaTealText},
+  numberstyle=\tiny\color{coaBodyText},
+  numbers=left,
+  numbersep=8pt,
+  frame=single,
+  rulecolor=\color{coaNavy},
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=2,
+  captionpos=b
+}
+\lstset{style=coaAsm}
+
+% ============================================================
+% LISTS: consistent spacing, no reliance on color for meaning
+% ============================================================
+\setlist{itemsep=0.3em, topsep=0.4em}
+
+% ============================================================
+% HEADER / FOOTER: "Page X of Y"
+% ============================================================
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyfoot[C]{\small\color{coaBodyText}Page \thepage\ of \pageref*{LastPage}}
+
+% ============================================================
+% DOCUMENT METADATA AND TITLE BLOCK
+% \AssignmentMeta{Full Title}{Week label} sets the PDF title and
+% language (for the tagged PDF's document properties) and prints
+% an accessible, properly structured title block. Call this once,
+% right after \begin{document}... actually before it is fine too,
+% since it only stores values and sets hyperref metadata; the
+% visible block is drawn by \AssignmentTitleBlock, invoked at the
+% top of the document body.
+% ============================================================
+\PassOptionsToPackage{hyphens}{url}
+\RequirePackage[
+  pdfusetitle,
+  colorlinks=true,
+  linkcolor=coaTealText,
+  citecolor=coaTealText,
+  urlcolor=coaTealText,
+  bookmarksopen=true,
+  bookmarksnumbered=true
+]{hyperref}
+
+\newcommand{\AssignmentFullTitle}{}
+\newcommand{\AssignmentWeekLabel}{}
+
+\newcommand{\AssignmentMeta}[2]{%
+  \renewcommand{\AssignmentFullTitle}{#1}%
+  \renewcommand{\AssignmentWeekLabel}{#2}%
+  \title{#1}%
+  \date{}%
+  \hypersetup{pdftitle={#1}, pdflang={en-US}}%
+}
+
+\newcommand{\AssignmentTitleBlock}{%
+  {\centering
+   {\LARGE\bfseries\color{coaNavy}\AssignmentFullTitle\par}
+   \vspace{0.3em}
+   {\large\color{coaTealText}\AssignmentWeekLabel\par}
+   \vspace{0.8em}
+  }
+}
+
+% A note on how the Resources list was put together. Call this right
+% after the Resources list itself, at the end of the document.
+\newcommand{\ResourcesDisclaimer}{%
+  \begin{center}
+  \rule{0.95\linewidth}{0.6pt}
+  \end{center}
+  \subsection*{A note on these resources}
+  \noindent
+  These links were found with help from an AI system and web search, not
+  from the instructor's own prior use. They look relevant, but none have
+  been personally verified by the instructor. Treat them as a starting
+  point, and let your instructor know if one is broken, off-topic, or
+  wrong.
+  \begin{center}
+  \rule{0.95\linewidth}{0.6pt}
+  \end{center}
+  \vspace{0.6em}
+}
+
+\endinput
