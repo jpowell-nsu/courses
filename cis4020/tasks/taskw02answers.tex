@@ -1,0 +1,211 @@
+% ============================================================================
+%  Task_W02_Answers.tex -- Fillable answer sheet for Task_W02: Backtracking
+%  Uses coa-accessible-student.sty for a consistent look with the
+%  assignment itself, without the AI-development disclaimer.
+%
+%  Students: see the "Before You Start" section in the compiled PDF (right
+%  after the Name line below) for how to edit and compile this file.
+% ============================================================================
+\documentclass[11pt]{article}
+\usepackage{coa-accessible-student}
+
+% Same plain pseudocode listing style used in the assignment itself.
+\lstdefinestyle{pseudo}{
+  basicstyle=\ttfamily\small\color{coaBodyText},
+  frame=single,
+  rulecolor=\color{coaNavy},
+  breaklines=true,
+  showstringspaces=false,
+  columns=fullflexible,
+  tabsize=2,
+  numbers=none
+}
+\lstset{style=pseudo}
+
+\title{Task W02: Backtracking --- Answer Sheet}
+\hypersetup{pdftitle={Task W02: Backtracking -- Answer Sheet}, pdflang={en-US}}
+
+\begin{document}
+
+{\centering
+{\Large\bfseries\color{coaNavy} Task W02: Backtracking --- Answer Sheet\par}
+\vspace{0.6em}
+}
+\noindent Name: \underline{\hspace{3.2in}}
+\vspace{1em}
+
+\begin{center}
+\rule{0.95\linewidth}{0.6pt}
+\end{center}
+\subsection*{Before You Start}
+\noindent
+This is a LaTeX source file, not a finished document; what you are reading
+right now is what it looks like once compiled. To edit it and produce your
+own PDF, you will need a LaTeX environment such as Overleaf, TeXworks, or a
+local TeX installation; if you need help setting it up in Linux, please let
+me know.
+
+\begin{enumerate}[leftmargin=1.4em]
+  \item Keep \texttt{Task\_W02\_Answers.tex} and
+        \texttt{coa-accessible-student.sty} in the same folder. This file
+        will not compile without the style file present.
+  \item Open \texttt{Task\_W02\_Answers.tex} in a text or code editor, not a
+        word processor, and replace each \textit{italicized} placeholder
+        with your own answer, following the instructions given in each
+        section.
+  \item Compile it by running \texttt{pdflatex Task\_W02\_Answers.tex}. Run
+        this command twice in a row; the page numbers at the bottom of each
+        page will not resolve correctly on a single pass, and will show
+        "Page 1 of ??" instead of the real total.
+  \item Every time you make a change to the \texttt{.tex} file, save it and
+        run \texttt{pdflatex} twice again to see your latest edits in the
+        PDF you submit.
+  \item Submit both files: your edited \texttt{Task\_W02\_Answers.tex}
+        source and the \texttt{Task\_W02\_Answers.pdf} it produces.
+\end{enumerate}
+\begin{center}
+\rule{0.95\linewidth}{0.6pt}
+\end{center}
+\vspace{0.6em}
+
+\section{Problem 1: A Smaller Board}
+
+\subsection{Board}
+Fill in the board below with a Q in each square where a queen ends up.
+Columns are 1 through 4 left to right; rows are 1 through 4 top to bottom.
+
+The table has one line of source for each row of the board. Find the line
+that starts with the row number you want, then count across its blank
+cells the same way you count across the column headers above the table,
+and type a capital Q into the correct one. Leave every other cell in that
+line blank. Do not add, remove, or reorder any \verb|&| symbols or the
+\verb|\\| at the end of a line, since that changes the shape of the table.
+
+For example, to place a queen in row 2, column 3, change this line:
+\begin{lstlisting}
+2 & & & & \\
+\end{lstlisting}
+to this:
+\begin{lstlisting}
+2 & & & Q & \\
+\end{lstlisting}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{c|c|c|c|c}
+ & 1 & 2 & 3 & 4 \\
+\hline
+1 & & & & \\
+\hline
+2 & & & & \\
+\hline
+3 & & & & \\
+\hline
+4 & & & & \\
+\end{tabular}
+\end{center}
+
+\subsection{Backtrack Notes}
+One line for each column where your first-tried row did not work.
+
+\begin{itemize}[leftmargin=1.4em]
+  \item \textit{Column \_\_, tried row \_\_ first, failed because \ldots}
+\end{itemize}
+
+\section{Problem 2: Row by Row}
+
+\subsection{Your Rewritten Pseudocode}
+If you used the AI-for-formatting exception described in the assignment,
+submit the AI conversation as its own file alongside this answer sheet.
+
+\begin{lstlisting}
+% Write your rewritten pseudocode here.
+\end{lstlisting}
+
+\subsection{Board}
+Fill in this table the same way you filled in the one for Problem 1, using
+a capital Q in the correct cell of the correct row's line. This time the
+queens come from your rewritten row-by-row version, starting from row 0.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{c|c|c|c|c}
+ & 1 & 2 & 3 & 4 \\
+\hline
+1 & & & & \\
+\hline
+2 & & & & \\
+\hline
+3 & & & & \\
+\hline
+4 & & & & \\
+\end{tabular}
+\end{center}
+
+\subsection{Backtrack Notes}
+One line for each row where your first-tried column did not work.
+
+\begin{itemize}[leftmargin=1.4em]
+  \item \textit{Row \_\_, tried column \_\_ first, failed because \ldots}
+\end{itemize}
+
+\section{Problem 3: Watch and Answer}
+
+\subsection{Question 1}
+\textit{In your own words, explain what backtracking means for a knight's
+tour search, using the words "dead end" and "undo."}
+
+\vspace{2em}
+
+\subsection{Question 2}
+\textit{Would a corner start need more backtracking than a central start,
+less, or is it impossible to say without trying? Explain your reasoning.}
+
+\vspace{2em}
+
+\subsection{Question 3}
+\textit{Could changing the fixed move order matter here, the way it did in
+Problem 2? Explain your reasoning.}
+
+\vspace{2em}
+
+\subsection{Question 4}
+\textit{Could a backtracking search ever find a complete tour on a three by
+three board? Explain your reasoning.}
+
+\vspace{2em}
+
+\section{Reflection Questions}
+
+\subsection{Question 1}
+\textit{Compare your Problem 1 board to your Problem 2 board, along with
+your backtrack notes for each.}
+
+\vspace{2em}
+
+\subsection{Question 2}
+\textit{Compare your Problem 1 backtrack notes to the Knight's Tour worked
+example's 31 calls and 19 backtracks.}
+
+\vspace{2em}
+
+\subsection{Question 3}
+\textit{Look back at your answer to Problem 3, question 2. Does that
+reasoning match what you saw across your Eight-Queens work?}
+
+\vspace{2em}
+
+\subsection{Question 4}
+\textit{Would changing the row order within each column for Problem 1
+behave more like Problem 2, or more like the Knight's Tour example?
+Explain your reasoning.}
+
+\section{Bugs or Issues You Found}
+If you found something in the assignment that needs to be debugged, for
+example an unclear problem statement or an example that does not behave
+the way it is described, describe it here. Leave this blank if nothing
+came up.
+
+\vspace{3em}
+
+\end{document}
