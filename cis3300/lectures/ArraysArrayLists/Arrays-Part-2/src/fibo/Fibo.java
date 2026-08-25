@@ -11,7 +11,7 @@ public class Fibo {
 		System.out.println(Arrays.toString(memo));
 		Arrays.fill(memo, -1);
 		
-		System.out.println(   fibo(20, memo)   );
+		System.out.println(   fibo(5, memo)   );
 		
 		System.out.println(Arrays.toString(memo));
 	}
