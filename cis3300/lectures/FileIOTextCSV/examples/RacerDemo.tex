@@ -1,0 +1,244 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc} % classnotes.sty omits this; without it, a literal
+                          % ">" in regular text renders as an upside-down
+                          % question mark. cis3300-accessible.sty already
+                          % loads T1, worth adding to classnotes.sty too.
+\usepackage[margin=1in]{geometry}
+\usepackage[pagenumbers]{classnotes}
+
+% This document is Java throughout except two data-file listings, which
+% override this locally with language={}. showstringspaces=false is added
+% locally because the shared classnotes.sty "sh" style does not set it
+% (cis3300-accessible.sty's style does); worth adding upstream too.
+\lstset{language=Java, basicstyle=\footnotesize\ttfamily, showstringspaces=false,
+  aboveskip=5pt, belowskip=5pt,
+  morecomment=[l][\color{codecmt}\itshape]{//}}
+
+\classnotesmeta{CIS 3300 - Objects, Files, and ArrayLists: The Racer Class}
+
+\begin{document}
+
+\classnotestitle{CIS 3300 \textbullet\ In-Class Demo}{Objects, Files, and ArrayLists}{Reading three file formats, and writing one back out}
+
+\noindent\textbf{\color{amber}A word before you read.}\enspace
+  These are my notes from over the years, cleaned up so they are readable. A few things to
+  keep in mind:
+ 
+  \begin{itemize}[leftmargin=1.4em]
+    \item \textbf{They are not a study guide, and they are not gospel.} Not everything here
+      appears in a lecture, and not every topic has notes yet; I will write more as we go.
+    \item \textbf{I write from memory and revise every semester.} A typo or an imprecise
+      statement can survive longer than it should.
+    \item \textbf{I use AI to help} convert documents to markdown, check for issues, and add
+      explanations. I do not trust it completely, so I am still editing these myself.
+    \item \textbf{Java changes.} The basics we cover are pretty resilient, but some features
+      do move over time.
+  \end{itemize}
+ 
+\noindent So: if you find something that looks wrong, contradicts the book, or just
+does not behave the way I claim when you run it, tell me. You will be doing the other students
+a favor, and you will understand the material better for having caught it. When in doubt, the
+textbook is the tiebreaker, and the compiler beats us both.
+
+A quick note before starting: today's demo uses a small custom class,
+\texttt{Racer}, to hold a few pieces of data together. This is meant
+as a light, practical introduction, just enough to build and use
+objects in this week's lab. Classes and objects get covered in full
+depth in a later class, so do not worry about understanding everything
+about how or why a class works yet, only how to create one and call
+its methods.
+
+With that said, today's goal is to see the same \texttt{Racer}
+objects handled several different ways: built by hand, read from a
+plain space-separated text file, read from a CSV file two different
+ways, and finally written back out to a file. The \texttt{Racer}
+class and its \texttt{ArrayList<Racer>} stay the same throughout;
+only where the data comes from, or goes to, changes.
+
+\section{Project Setup}
+
+Do this once, before Part 1, and everything below will just work.
+
+\begin{enumerate}[itemsep=2pt]
+  \item Create a new Eclipse project.
+  \item Right click the \texttt{src} folder, choose
+    \textbf{New > Package}, and name it \texttt{racer}. Every class
+    today goes in this package, starting with \texttt{package racer;}
+    as its first line.
+  \item Right click the project name, choose \textbf{New > Folder},
+    and name it \texttt{files}. Every data file you read today, and
+    everything your code writes out, lives here.
+\end{enumerate}
+
+\section{Part 1: Building Racer Objects by Hand}
+
+A class is a blueprint. It describes what a \texttt{Racer} object
+knows about itself (its name, its vehicle, and its top speed) but it
+does not create any actual racers on its own. Each time the program
+writes \texttt{new Racer(...)}, one new object gets built from that
+blueprint and stored in memory.
+
+\subsection{The Racer class}
+
+\lstinputlisting{Racer.java}
+
+The constructor is the piece that runs at the exact moment
+\texttt{new Racer(...)} executes. Its only job is to take the values
+passed in and store them in the object's fields, using
+\texttt{this.name = name;} to tell Java which \texttt{name} is the
+field and which is the parameter.
+
+\subsection{Creating racers and putting them in a list}
+
+\lstinputlisting{RacerDemoPart1.java}
+
+Every call to \texttt{racers.add(new Racer(...))} builds one object
+and adds it to the list in a single step. Once the objects are in the
+\texttt{ArrayList}, \texttt{racers.get(i)} hands back one
+\texttt{Racer} object at a time, and calling \texttt{.getName()} or
+\texttt{.getTopSpeed()} on it reads that object's fields. The
+fastest-racer loop at the bottom does not use anything special to
+search the list, it just walks every element with a regular for loop
+and keeps track of the best one seen so far, an idea that comes back
+later today.
+
+\section{Part 2: Reading a Space-Separated File}
+
+Not every data file is a CSV. \texttt{lapTimes.txt} below has one
+racer per line, with a name and a lap time separated by a space
+instead of a comma.
+
+\subsection{lapTimes.txt}
+
+\lstinputlisting[language={}]{lapTimes.txt}
+
+\subsection{Reading lapTimes.txt}
+
+\lstinputlisting{RacerDemoPart2.java}
+
+\texttt{Scanner} already knows how to split on whitespace, so no
+manual splitting is needed here. Calling \texttt{.next()} reads the
+next word, and \texttt{.nextDouble()} reads the next number, each one
+stopping automatically at the next space or line break. This is the
+same idea you will use to read a file with several numbers per line,
+separated by spaces, later this week.
+
+\section{Part 3: Reading a CSV File Without a Library}
+
+\texttt{racers.csv} below is the same three racers as Part 1, this
+time saved to a file with commas between the fields.
+
+\subsection{racers.csv}
+
+\lstinputlisting[language={}]{racers.csv}
+
+\subsection{Reading racers.csv by hand}
+
+\lstinputlisting{RacerDemoPart3.java}
+
+This reads each line as one long \texttt{String} and then calls
+\texttt{line.split(",")} to cut it into pieces wherever a comma
+appears. It works here because nothing in \texttt{racers.csv}
+contains a comma inside a field. If a vehicle name were written as
+\texttt{"Kart, Deluxe"}, with a comma of its own, \texttt{split(",")}
+would cut that name into two pieces and shift every value after it
+over by one column, silently producing the wrong data instead of an
+error. Real-world CSV data is often messier than today's example,
+which is why a dedicated library is worth using.
+
+\section{Part 4: Reading the Same CSV File with OpenCSV}
+
+This part reads the exact same \texttt{racers.csv} from Part 3 again,
+using the OpenCSV library instead of \texttt{split(",")}, so you can
+compare the two approaches directly.
+
+\subsection{Adding OpenCSV and Apache Commons Lang to your Eclipse project}
+
+OpenCSV needs one small helper library, Apache Commons Lang, to run.
+The steps below are a simple way to add both jars to a project by
+hand. This is not necessarily the most robust way to manage a library
+in a larger project, but it is enough for today, and it will be
+walked through live in class.
+
+\begin{enumerate}[itemsep=2pt]
+  \item Download OpenCSV from
+    \url{https://sourceforge.net/projects/opencsv/}, and Apache
+    Commons Lang from
+    \url{https://commons.apache.org/proper/commons-lang/download_lang.cgi}.
+    Each download is an archive; extract both and find the plain
+    \texttt{.jar} file in each one, not the \texttt{-sources} or
+    \texttt{-javadoc} jar.
+  \item In Eclipse, right click your project in the Package Explorer,
+    choose \textbf{New > Folder}, and name it \texttt{lib}. Copy both
+    jar files into that folder.
+  \item Right click the project name, choose
+    \textbf{Build Path > Configure Build Path}, open the
+    \textbf{Libraries} tab, choose \textbf{Classpath}, then
+    \textbf{Add JARs} and select both jars in your \texttt{lib}
+    folder.
+  \item Click \textbf{Apply and Close}. The line
+    \texttt{import com.opencsv.CSVReader;} should no longer show an
+    error.
+\end{enumerate}
+
+% Instructor note, not shown to students: this simplified two-jar
+% setup (OpenCSV + Apache Commons Lang) is enough for the basic
+% CSVReader usage shown in this demo. OpenCSV's full formal dependency
+% chain also includes commons-text, commons-beanutils,
+% commons-collections, and commons-collections4; those are not needed
+% for anything shown today, but would be if a feature reaching further
+% into OpenCSV were used later. Recheck OpenCSV's current dependency
+% list before reusing this approach in a future semester.
+
+\subsection{Reading racers.csv with OpenCSV}
+
+\lstinputlisting{RacerDemoPart4.java}
+
+\texttt{reader.readNext()} returns one line at a time as a String
+array, already correctly split at the commas, handling a comma inside
+a quoted field the way \texttt{split(",")} could not. It returns
+\texttt{null} once the file runs out, which is what the \texttt{while}
+loop's condition is checking.
+
+\section{Part 5: Writing Data to a File}
+
+Reading data is only half the picture. This part builds the same
+racer list from Part 1 again and writes a short report out to a new
+file, \texttt{raceReport.txt}.
+
+\subsection{Writing raceReport.txt}
+
+\lstinputlisting{RacerDemoPart5.java}
+
+\texttt{PrintWriter} has the same \texttt{println(...)} method you
+have already used with \texttt{System.out}, except its output goes to
+a file instead of the console. The call to \texttt{writer.close()} at
+the end is not optional: output can stay held in memory rather than
+actually written to disk until the writer is closed, so skipping it
+can leave the file empty or cut off partway through.
+
+\section{What to Notice}
+
+\begin{itemize}[itemsep=2pt]
+  \item The \texttt{Racer} class did not change across any of the
+    five parts above. Objects do not care whether the values used to
+    build them were typed directly into the code, read from a file,
+    or about to be written back out to one.
+  \item \texttt{Scanner}'s \texttt{.next()}, \texttt{.nextInt()}, and
+    \texttt{.nextDouble()} methods split on whitespace automatically,
+    which is exactly what a space-separated file needs.
+  \item \texttt{split(",")} is fine for simple, well-behaved CSV data,
+    but it breaks the moment a field contains a comma of its own.
+    OpenCSV exists to handle that case correctly.
+  \item Writing to a file with \texttt{PrintWriter} looks almost
+    identical to printing to the console, the output just goes
+    somewhere else, and the file has to be closed when you are done.
+\end{itemize}
+
+\notebox{Looking ahead.}{The lab that pairs with this demo asks you to
+combine two files into one list, matching values by an ID and updating
+objects that already exist in the list rather than only adding new
+ones. Everything above shows how to read and write each kind of file
+on its own; combining and updating come next.}
+
+\end{document}
