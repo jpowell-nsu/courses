@@ -1,0 +1,11 @@
+CHECKIN,Mario,Standard Kart,100
+CHECKIN,Bowser,Heavy Cruiser,100
+LAP Mario 1 62.5
+LAP Bowser 1 68.0
+CHECKIN,Toad,Light Buggy,100
+LAP Mario 2 61.8
+LAP Bowser 2 67.2
+LAP Toad 1 58.0
+LAP Mario 3 63.0
+LAP Bowser 3 66.9
+LAP Toad 2 57.5

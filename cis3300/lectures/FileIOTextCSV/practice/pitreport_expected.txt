@@ -1,0 +1,3 @@
+Mario (Standard Kart): average lap 62.43 seconds
+Bowser (Heavy Cruiser): average lap 67.37 seconds
+Toad (Light Buggy): average lap 57.75 seconds
