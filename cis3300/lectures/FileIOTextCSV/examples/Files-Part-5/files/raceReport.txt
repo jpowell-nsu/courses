@@ -1,0 +1,3 @@
+Mario,Standard Kart,62.5 mph
+Bowser,Heavy Cruiser,68.0 mph
+Toad,Light Buggy,58.0 mph

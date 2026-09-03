@@ -19,7 +19,7 @@ public class RacerDemoPart5 {
 
         for (int i = 0; i < racers.size(); i++) {
             Racer r = racers.get(i);
-            writer.println(r.getName() + " - " + r.getVehicle() + " - " + r.getTopSpeed() + " mph");
+            writer.println(r.getName() + "," + r.getVehicle() + "," + r.getTopSpeed() + " mph");
         }
 
         writer.close(); // required, or the file can end up empty

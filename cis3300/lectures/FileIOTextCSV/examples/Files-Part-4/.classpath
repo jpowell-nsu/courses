@@ -6,7 +6,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="libs/opencsv-5.12.0.jar"/>
-	<classpathentry kind="lib" path="/home/jpo2022/eclipse-workspace/Files-Part-4/libs/commons-lang3-3.20.0.jar"/>
+	<classpathentry kind="lib" path="/home/jpo2022/git/courses/cis3300/lectures/FileIOTextCSV/examples/Files-Part-4/libs/opencsv-5.12.0.jar"/>
+	<classpathentry kind="lib" path="/home/jpo2022/git/courses/cis3300/lectures/FileIOTextCSV/examples/Files-Part-4/libs/commons-lang3-3.20.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
