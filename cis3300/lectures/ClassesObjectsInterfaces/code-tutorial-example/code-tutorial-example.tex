@@ -1,0 +1,461 @@
+% ============================================================================
+%  LiveCodeWalkthrough.tex
+%  Built on classnotes.sty (WCAG 2.1 AA baseline). Compile twice with pdflatex
+%  so the "Page X of Y" footer resolves.
+% ============================================================================
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[pagenumbers]{classnotes}
+
+% Render the few Unicode glyphs used in the prose as proper LaTeX.
+\usepackage{newunicodechar}
+\newunicodechar{→}{\ensuremath{\rightarrow}}
+\newunicodechar{×}{\ensuremath{\times}}
+\newunicodechar{≈}{\ensuremath{\approx}}
+\newunicodechar{≤}{\ensuremath{\le}}
+\newunicodechar{≥}{\ensuremath{\ge}}
+\newunicodechar{−}{\ensuremath{-}}
+\newunicodechar{·}{\textperiodcentered}
+\newunicodechar{…}{\dots}
+\newunicodechar{—}{---}
+\newunicodechar{–}{--}
+\newunicodechar{‘}{`}
+\newunicodechar{’}{'}
+\newunicodechar{“}{``}
+\newunicodechar{”}{''}
+\newunicodechar{é}{\'e}
+
+% Absorb tight lines caused by unbreakable inline code, without visible harm.
+\setlength{\emergencystretch}{3em}
+\sloppy
+
+% Accessible Java listing style (colors contrast-checked on the code background).
+\lstdefinestyle{java}{
+  language=Java,
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{navy}\bfseries,
+  commentstyle=\color{codecmt}\itshape,
+  stringstyle=\color{teal},
+  showstringspaces=false,
+  breaklines=true,
+  keepspaces=true,
+  columns=fullflexible,
+  frame=single,
+  rulecolor=\color{rulecol},
+  framesep=6pt,
+  xleftmargin=6pt,
+  xrightmargin=6pt,
+  aboveskip=8pt,
+  belowskip=8pt
+}
+
+% Small italic franchise tag, matching the pop-culture examples set from
+% the Arrays and ArrayLists unit.
+\newcommand{\franchise}[1]{\nopagebreak{\small\itshape [#1]}\par\vspace{2pt}}
+
+\classnotesmeta{Classes, Objects, and Interfaces: Code Tutorial}
+
+\begin{document}
+
+\classnotestitle{OBJECT-ORIENTED PROGRAMMING (JAVA) \textbullet\ CODE TUTORIAL}{Classes, Objects, and Interfaces}{A self-guided walkthrough, example by example}
+
+\noindent This is a hands-on walkthrough, meant for you to work through
+yourself, not just read. The comprehensive class notes explain every concept
+in depth, and the slides introduce the vocabulary and motivation; this
+document is where you actually build the program, one small piece at a time,
+in the order shown. Type each block of code into your own files, run it, and
+think through each prompt before moving on. Each example below has a matching
+folder of finished \texttt{.java} files, in case you want to check your work
+or pick up partway through.
+
+\noindent Every listing here should compile exactly as written, and has been
+run to confirm its output; unlike some lab assignments, nothing here is a
+TODO or an intentional error for you to find. If you are working in Eclipse,
+you may need to adjust the layout a little, for example moving a class into
+the right source folder or package, to get a project to build. Where an
+example's code carries over and extends the previous example's, the new
+material is called out so it is easy to see what changed.
+
+\section{Example 1: A First Class}
+
+\textbf{Goal.} Build one class from nothing, then create and use a couple of
+objects from it. This is the only example that starts from a blank file.
+
+Create a file named \texttt{Car.java} and start with just the fields and a
+constructor. Before moving on, make sure you can explain what each line does.
+
+\begin{lstlisting}[style=java]
+public class Car {
+    private String make;
+    private String model;
+    private int year;
+    private int mileage;
+
+    public Car(String make, String model, int year) {
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.mileage = 0;
+    }
+}
+\end{lstlisting}
+
+\textbf{Check your understanding.} Why does the constructor set \cmd{mileage}
+directly to \cmd{0} instead of taking it as a parameter? Every new car should
+start at zero miles; there is no valid reason to let a caller pick a starting
+mileage.
+
+Add getters next, then a setter with a private helper behind it. Slow down here
+and make sure you understand \emph{why} the helper exists, not just what it
+does.
+
+\begin{lstlisting}[style=java]
+    public String getMake()  { return make; }
+    public String getModel() { return model; }
+    public int getYear()     { return year; }
+    public int getMileage()  { return mileage; }
+
+    public void setMileage(int newMileage) {
+        if (isValidMileage(newMileage)) {
+            mileage = newMileage;
+        } else {
+            System.out.println("Ignored an invalid mileage: " + newMileage);
+        }
+    }
+
+    private boolean isValidMileage(int candidate) {
+        return candidate >= mileage;
+    }
+
+    public void drive(int miles) {
+        setMileage(mileage + miles);
+    }
+}
+\end{lstlisting}
+
+\textbf{Predict before you run it.} What happens if \cmd{drive} is called with
+a negative number? Write down your guess, then run it and check.
+\cmd{isValidMileage} rejects it, since the result would be less than the
+current mileage.
+
+Now create a second file, for example \texttt{Example1Demo.java}, and
+instantiate a couple of cars.
+
+\begin{lstlisting}[style=java]
+Car civic = new Car("Honda", "Civic", 2022);
+Car mustang = new Car("Ford", "Mustang", 2024);
+
+civic.drive(120);
+mustang.setMileage(15);
+
+System.out.println(civic.getMake() + " " + civic.getModel()
+    + ": " + civic.getMileage() + " miles");
+System.out.println(mustang.getMake() + " " + mustang.getModel()
+    + ": " + mustang.getMileage() + " miles");
+
+civic.setMileage(10);   // watch this get rejected
+\end{lstlisting}
+
+Close this example with the identity question, since it sets up hash codes
+later (Example 4).
+
+\begin{lstlisting}[style=java]
+Car civic2 = new Car("Honda", "Civic", 2022);
+System.out.println(civic == civic2);   // false
+System.out.println(civic == civic);    // true
+\end{lstlisting}
+
+\textbf{Check your understanding.} \cmd{civic} and \cmd{civic2} have identical
+make, model, and year. Why does Java still say they are not equal? Sit with
+that question for a moment; it is exactly the motivation for Example 4, where
+you will fix it.
+
+\textbf{Try it yourself.} Add a third field to \cmd{Car}, for example a VIN
+string. Decide for yourself whether it belongs in the constructor, gets its own
+setter, or both, and be ready to explain your choice.
+
+\section{Example 2: A Second Class, and How Objects Relate}
+
+\textbf{Goal.} Keep \texttt{Car.java} from Example 1 unchanged, and build two
+more classes around it, so you see a program made of several cooperating
+objects for the first time.
+
+Build \texttt{Mechanic} first, since it is the simpler relationship.
+
+\begin{lstlisting}[style=java]
+public class Mechanic {
+    public void inspect(Car car) {
+        System.out.println("Inspecting a " + car.getYear() + " "
+            + car.getMake() + " " + car.getModel());
+    }
+}
+\end{lstlisting}
+
+\textbf{Check your understanding.} Does \cmd{Mechanic} store a \cmd{Car}
+anywhere? It does not; it borrows one for the duration of a single method
+call. This is dependence, uses-a.
+
+Then build \texttt{Garage}, which is the stronger relationship.
+
+\begin{lstlisting}[style=java]
+import java.util.ArrayList;
+
+public class Garage {
+    private String location;
+    private ArrayList<Car> fleet;
+
+    public Garage(String location) {
+        this.location = location;
+        this.fleet = new ArrayList<>();
+    }
+
+    public void addCar(Car car) {
+        fleet.add(car);
+    }
+
+    public Car findByModel(String model) {
+        for (Car car : fleet) {
+            if (car.getModel().equalsIgnoreCase(model)) {
+                return car;
+            }
+        }
+        return null;
+    }
+
+    public void printFleet() {
+        for (Car car : fleet) {
+            System.out.println(car.getYear() + " " + car.getMake()
+                + " " + car.getModel());
+        }
+    }
+}
+\end{lstlisting}
+
+\textbf{Check your understanding.} What is different about how \cmd{Garage}
+holds on to its \cmd{Car} objects, compared to \cmd{Mechanic}? It keeps them in
+a field across many method calls, rather than borrowing one for a single call.
+This is aggregation, has-a. A related question worth asking yourself: could a
+\cmd{Car} exist without a \cmd{Garage}? It can, which is exactly the
+independent-lifecycle property that separates aggregation from composition.
+See the class notes, Section 6, for the fuller version of this point.
+
+Now put it all together in a driver class.
+
+\begin{lstlisting}[style=java]
+Garage shop = new Garage("Main Street");
+shop.addCar(new Car("Honda", "Civic", 2022));
+shop.addCar(new Car("Ford", "Mustang", 2024));
+shop.addCar(new Car("Toyota", "Corolla", 2020));
+
+shop.printFleet();
+
+Car found = shop.findByModel("Mustang");
+Mechanic tom = new Mechanic();
+if (found != null) {
+    tom.inspect(found);
+}
+\end{lstlisting}
+
+\textbf{Try it yourself.} Add a \cmd{removeCar(String model)} method to
+\cmd{Garage} on your own, using \cmd{findByModel} as a model for the loop.
+
+\section{Example 3: Passing Objects, and a List of Objects}
+
+\textbf{Goal.} \texttt{Car}, \texttt{Mechanic}, and \texttt{Garage} carry over
+unchanged from Example 2. This example is about two habits: what actually
+happens when an object is passed to a method, and using \cmd{ArrayList} with a
+class of your own instead of a built-in type.
+
+Start with the pass-by-value puzzle, since it rewards being run rather than
+just read.
+
+\begin{lstlisting}[style=java]
+public static void serviceCar(Car car) {
+    car.setMileage(car.getMileage() + 5000);
+}
+
+public static void replaceCar(Car car) {
+    car = new Car("Toyota", "Corolla", 2020);
+}
+
+Car civic = new Car("Honda", "Civic", 2022);
+
+serviceCar(civic);
+System.out.println(civic.getMileage());   // 5000
+
+replaceCar(civic);
+System.out.println(civic.getModel());     // still "Civic"
+\end{lstlisting}
+
+\textbf{Predict before you run it.} Will \cmd{civic.getModel()} print
+\cmd{"Civic"} or \cmd{"Corolla"} after \cmd{replaceCar} runs? Write down your
+answer, then run it. What actually gets passed is a copy of the reference, not
+the object; reassigning the parameter inside the method only redirects that
+local copy.
+
+The \texttt{Garage} fleet from Example 2 is already an \cmd{ArrayList} of
+objects, so glance back at it, then look at the same pattern applied to
+something less expected.
+\franchise{Pokemon}
+
+\begin{lstlisting}[style=java]
+import java.util.ArrayList;
+
+ArrayList<Pokemon> party = new ArrayList<>();
+party.add(new Pokemon("Pikachu", "Electric", 35));
+party.add(new Pokemon("Charizard", "Fire", 78));
+party.add(new Pokemon("Snorlax", "Normal", 160));
+
+for (Pokemon p : party) {
+    System.out.println(p.getName() + " (" + p.getType()
+        + "), HP: " + p.getHp());
+}
+
+int totalHp = 0;
+for (Pokemon p : party) {
+    totalHp += p.getHp();
+}
+System.out.println("Total party HP: " + totalHp);
+\end{lstlisting}
+
+\cmd{Pokemon} is a tiny class with just a name, a type, and an HP field, built
+the same way \cmd{Car} was in Example 1. The point to take away:
+\cmd{ArrayList} does not care what the object is.
+
+\textbf{Try it yourself.} Would sorting the party by HP be any different from
+sorting the fleet by mileage? Think it through, then try writing one of the
+two. The pattern is identical either way.
+
+\section{Example 4: Overriding toString, equals, and hashCode}
+
+\textbf{Goal.} Revisit the Example 1 identity puzzle and resolve it, by
+overriding the three methods every class inherits from \cmd{Object}.
+
+Add the three overrides to your \texttt{Car.java} one at a time, running your
+demo after each one so the change is visible immediately.
+
+\begin{lstlisting}[style=java]
+@Override
+public String toString() {
+    return year + " " + make + " " + model + " (" + mileage + " miles)";
+}
+\end{lstlisting}
+
+\textbf{Run it:} \cmd{System.out.println(civic)} now prints something a human
+can read, instead of a class name and a hash code.
+
+\begin{lstlisting}[style=java]
+@Override
+public boolean equals(Object other) {
+    if (this == other) {
+        return true;
+    }
+    if (!(other instanceof Car)) {
+        return false;
+    }
+    Car otherCar = (Car) other;
+    return year == otherCar.year
+        && make.equals(otherCar.make)
+        && model.equals(otherCar.model);
+}
+\end{lstlisting}
+
+\textbf{Run it:} the Example 1 identity example again. \cmd{civic == civic2}
+is still \cmd{false}, but \cmd{civic.equals(civic2)} is now \cmd{true}. Make
+sure you can state the distinction in your own words: \cmd{==} compares
+identity, \cmd{equals} (once overridden) compares state.
+
+\begin{lstlisting}[style=java]
+import java.util.Objects;
+
+@Override
+public int hashCode() {
+    return Objects.hash(make, model, year);
+}
+\end{lstlisting}
+
+\textbf{Check your understanding.} Why does \cmd{hashCode} use the exact same
+three fields as \cmd{equals}? Two objects that \cmd{equals} says are equal
+must report the same hash code, or code that relies on hashing, such as a
+\cmd{HashSet} later in the course, breaks in ways that are hard to trace.
+
+\textbf{Try it yourself.} What would go wrong if \cmd{equals} compared
+\cmd{mileage} too? Try adding it and see what breaks. Two otherwise-identical
+cars would stop being equal the moment either one was driven, which is almost
+never what you want from ``the same car.''
+
+\section{Example 5: Interfaces}
+
+\textbf{Goal.} \texttt{Car} carries over from Example 4 with its three
+overrides intact. This example adds an interface and makes \texttt{Car}
+implement it.
+
+Build the interface first, on its own.
+
+\begin{lstlisting}[style=java]
+public interface Serviceable {
+    int MAX_MILES_BETWEEN_SERVICES = 5000;
+
+    void service();
+
+    default void honk() {
+        System.out.println("Beep beep!");
+    }
+}
+\end{lstlisting}
+
+\textbf{Check your understanding.} Which of these three members needs a body
+written by every class that implements \cmd{Serviceable}, and which one
+already has one? \cmd{service()} is abstract and needs a body; \cmd{honk()} is
+default and already has one; the constant is shared automatically.
+
+Change the \texttt{Car} class header to \cmd{implements Serviceable}, and add
+the one method the interface requires.
+
+\begin{lstlisting}[style=java]
+public class Car implements Serviceable {
+    // ... existing fields, constructor, and methods ...
+    private int milesSinceService;   // new field for this method
+
+    @Override
+    public void service() {
+        if (milesSinceService >= MAX_MILES_BETWEEN_SERVICES) {
+            System.out.println(model + " was overdue and has now been serviced.");
+        } else {
+            System.out.println(model + " has been serviced.");
+        }
+        milesSinceService = 0;
+    }
+}
+\end{lstlisting}
+
+\textbf{A mistake worth making on purpose.} Try writing \cmd{setMileage(0)}
+inside \cmd{service()} instead, as a shortcut for ``resetting'' something. Run
+it and watch \cmd{isValidMileage} reject it, since the odometer is never
+allowed to go backward. This is a real bug I ran into while writing this exact
+example, and working through why it fails yourself is more memorable than
+being told the right answer up front. The fix is the separate
+\cmd{milesSinceService} field shown above, which tracks something that is
+genuinely allowed to reset.
+
+Finish with a demo of your own.
+
+\begin{lstlisting}[style=java]
+Car civic = new Car("Honda", "Civic", 2022);
+civic.drive(6000);
+
+civic.service();
+civic.honk();
+
+System.out.println("Service interval: "
+    + Serviceable.MAX_MILES_BETWEEN_SERVICES + " miles");
+\end{lstlisting}
+
+\textbf{Wrapping up.} You now have working vocabulary for three ways objects
+relate: uses-a (Example 2's \cmd{Mechanic}), has-a (Example 2's
+\cmd{Garage}), and implements (this example's \cmd{Serviceable}). The natural
+next question is is-a, inheritance, which is previewed in the slides and gets
+its own unit later in the semester.
+
+\end{document}
