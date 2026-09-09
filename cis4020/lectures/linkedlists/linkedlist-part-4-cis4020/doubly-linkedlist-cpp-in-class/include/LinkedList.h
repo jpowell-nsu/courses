@@ -1,0 +1,149 @@
+#pragma once
+
+#include <iomanip>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+
+// Thrown when an index passed to add, get, or remove is out of range.
+// Mirrors the book's ListIndexOutOfBoundsException, which extends
+// IndexOutOfBoundsException in Java. std::out_of_range is the closest
+// standard-library equivalent in C++.
+class ListIndexOutOfBoundsException : public std::out_of_range {
+public:
+	explicit ListIndexOutOfBoundsException(const std::string& message) : std::out_of_range(message) {}
+};
+
+/*********************************************************
+Reference-based implementation of the ADT list. A port of the Java
+version to C++, using a template so the list can hold any type
+without a cast, the same reason the Java side moved to generics.
+**********************************************************/
+template <typename T>
+class List {
+public:
+	List() : head(nullptr), numItems(0) {}
+
+	// This class owns its nodes through a raw pointer, so copying has to
+	// be handled explicitly or disabled outright. Disabled here, the
+	// same choice made for the stack and queue ports.
+	List(const List&) = delete;
+	List& operator=(const List&) = delete;
+
+	// Java's removeAll can get away with head = null because the garbage
+	// collector reclaims the whole abandoned chain later. C++ has no
+	// such safety net, so the destructor walks the chain and deletes
+	// every node itself before letting go of it.
+	~List() {
+		removeAll();
+	}
+
+	bool isEmpty() const {
+		return (numItems == 0);
+	}
+
+	int size() const {
+		return numItems;
+	}
+
+	void display() const {
+		Node* curr = head;
+		std::cout << std::left;
+		while (curr != nullptr) {
+			std::cout << "current: " << std::setw(24) << curr
+					   << "|" << std::setw(12) << curr->item
+					   << "|" << std::setw(24) << curr->next << "\n";
+			curr = curr->next;
+		}
+	}
+
+	T get(int index) const {
+		if (index < 0 || index >= numItems) {
+			throw ListIndexOutOfBoundsException("List index out of bounds on get");
+		}
+		Node* curr = find(index);		// get node reference
+		return curr->item;				// get the item
+	}
+
+	T &operator[](T &index) {
+		if (index < 0 || index >= numItems) {
+			throw ListIndexOutOfBoundsException("List index out of bounds on get");
+		}
+		Node* curr = find(index);		// get node reference
+		return curr->item;				// get the item
+	}
+
+	void add(int index, const T& item) {
+		if (index < 0 || index > numItems) {
+			throw ListIndexOutOfBoundsException("List index out of bounds on add");
+		}
+		if (index == 0) {				// insert the new node at beginning of list
+			Node* newNode = new Node(item, nullptr, nullptr);
+			if (head == nullptr) {
+				head = newNode;
+			} else {
+				newNode->next = head;
+				head->prev = newNode;
+				head = newNode;
+			}
+			
+
+		} else {						// insert the new node after the node that prev references
+			Node* prev = find(index - 1);
+			Node* newNode = new Node(item, prev, prev->next);
+			prev->next = newNode;
+			if (newNode->next != nullptr) {
+				newNode->next->prev = newNode;
+			}
+		}
+		numItems++;
+	}
+
+	void remove(int index) {
+		if (index < 0 || index >= numItems) {
+			throw ListIndexOutOfBoundsException("List index out of bounds on remove");
+		}
+		if (index == 0) {				// delete the first node from the list
+			Node* oldHead = head;
+			head = head->next;
+			delete oldHead;				// Java lets this go for the GC; C++ has to free it explicitly
+		} else {						// delete the node after the node that prev references
+			Node* prev = find(index - 1);
+			Node* curr = prev->next;
+			prev->next = curr->next;
+			delete curr;
+		}
+		numItems--;
+	}
+
+	void removeAll() {
+		while (head != nullptr) {
+			Node* temp = head;
+			head = head->next;
+			delete temp;
+		}
+		numItems = 0;
+	}
+
+private:
+	struct Node {
+		T item;
+		Node* prev;
+		Node* next;
+
+		explicit Node(const T& newItem) : item(newItem), next(nullptr), prev(nullptr) {}
+		Node(const T& newItem, Node* prevNode, Node* nextNode) : item(newItem),
+								prev(prevNode), next(nextNode) {}
+	};
+
+	inline Node* find(int index) const {
+		Node* curr = head;
+		for (int skip = 0; skip < index; skip++) {
+			curr = curr->next;
+		}
+		return curr;
+	}
+
+	Node* head;		// points to first item
+	int numItems;		// number of items in list
+};
