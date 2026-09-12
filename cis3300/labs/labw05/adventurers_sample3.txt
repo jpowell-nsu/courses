@@ -1,0 +1,5 @@
+Quinn Druid 10 13 14 12 17 9
+Marrow Warlock 8 12 13 16 10 15
+Ivy Sorcerer 9 14 11 13 10 18
+Dorian Monk 15 17 13 10 12 8
+Wren Artificer 11 12 14 17 13 9

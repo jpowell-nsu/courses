@@ -1,0 +1,4 @@
+Elandra Wizard 8 14 12 17 13 10
+Grom Fighter 17 12 16 8 10 9
+Fenwick Rogue 10 18 12 13 14 8
+Brynn Cleric 13 10 15 9 17 12

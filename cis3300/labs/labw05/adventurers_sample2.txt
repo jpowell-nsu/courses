@@ -1,0 +1,3 @@
+Thistle Ranger 12 16 11 10 15 9
+Orin Bard 9 14 12 11 8 17
+Sable Paladin 16 10 15 8 12 14
