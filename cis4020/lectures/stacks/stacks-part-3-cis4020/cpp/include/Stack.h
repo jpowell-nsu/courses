@@ -81,7 +81,7 @@ public:
 
 	void display() const {
 		display(top);
-		std::cout << "]" << std::endl;	// closes the "Base [" printed by the
+		std::cout << " " << std::endl;	// closes the "Base [" printed by the
 										// base case below; the original Java
 										// version never printed a closing bracket
 	}
@@ -105,7 +105,7 @@ private:
 
 	void display(Node<T>* n) const {
 		if (n == nullptr) {
-			std::cout << "Base [";
+			std::cout << "Base ";
 		} else {
 			display(n->next);
 			std::cout << "(" << n->item << ") ";

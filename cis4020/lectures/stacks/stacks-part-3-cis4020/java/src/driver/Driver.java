@@ -29,21 +29,25 @@ public class Driver {
 
 	public static boolean isBalanced(String expression) {
 		Stack<Character> stack = new Stack<Character>();
- 
+		stack.display();
 		for (int i = 0; i < expression.length(); i++) {
 			char c = expression.charAt(i);
  
 			if (c == '(' || c == '[' || c == '{') {
 				stack.push(c);
+				stack.display();
 			} else if (c == ')' || c == ']' || c == '}') {
 				if (stack.isEmpty()) {
+					stack.display();
 					return false;	// a closing symbol with nothing open to match it
 				}
 				char open = stack.pop();
+				stack.display();
 				if (!matches(open, c)) {
 					return false;	// the wrong kind of bracket closed it
 				}
 			}
+			
 			// any other character (letters, digits, spaces, operators) is ignored
 		}
  

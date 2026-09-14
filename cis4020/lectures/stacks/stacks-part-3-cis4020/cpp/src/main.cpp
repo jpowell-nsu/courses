@@ -18,16 +18,20 @@ bool matches(char open, char close) {
 
 bool isBalanced(const std::string& expression) {
 	Stack<char> stack;
-
+	stack.display();
 	for (char c : expression) {
 		if (c == '(' || c == '[' || c == '{') {
 			stack.push(c);
+			stack.display();
 		} else if (c == ')' || c == ']' || c == '}') {
 			if (stack.isEmpty()) {
+				stack.display();
 				return false;	// a closing symbol with nothing open to match it
 			}
 			char open = stack.pop();
+			stack.display();
 			if (!matches(open, c)) {
+				stack.display();
 				return false;	// the wrong kind of bracket closed it
 			}
 		}
