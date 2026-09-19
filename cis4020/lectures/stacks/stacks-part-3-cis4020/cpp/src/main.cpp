@@ -18,40 +18,45 @@ bool matches(char open, char close) {
 
 bool isBalanced(const std::string& expression) {
 	Stack<char> stack;
+    bool balanced = true;
+
+    std::printf("Char:   ");
 	stack.display();
-	for (char c : expression) {
-		if (c == '(' || c == '[' || c == '{') {
+    for (size_t i = 0; i < expression.length() && balanced; i++) {
+	    char c = expression[i];
+        std::printf("Char: %c ", c);
+        if (c == '(' || c == '[' || c == '{') {
 			stack.push(c);
-			stack.display();
 		} else if (c == ')' || c == ']' || c == '}') {
 			if (stack.isEmpty()) {
-				stack.display();
-				return false;	// a closing symbol with nothing open to match it
-			}
-			char open = stack.pop();
-			stack.display();
-			if (!matches(open, c)) {
-				stack.display();
-				return false;	// the wrong kind of bracket closed it
-			}
+                balanced = false; // a closing symbol with nothing open to match it
+            } else {
+       			char open = stack.pop();
+			    if (!matches(open, c)) {
+                    balanced = false; // the wrong kind of bracket closed it
+			    }
+            }
 		}
 		// any other character (letters, digits, spaces, operators) is ignored
+        stack.display();
 	}
-
-	return stack.isEmpty();	// anything still on the stack was never closed
+    return (balanced && stack.isEmpty());
 }
 
 int main() {
 	std::string tests[] = {
-		"(a + b) * [c - d]",
+		"(a+b)*[c-d]",
 		"{[()()]}",
-		"(a + b] * (c - d)",
-		"((a + b)",
-		"a + b) * (c - d",
-		""
-	};
+		"(a+b]*(c-d)",
+		"((a+b)",
+		"a+b)*(c-d",
+		"([)(])(",
+		"([)(])",
+        ""
+    };
 
 	for (const std::string& test : tests) {
+        std::printf("------------------------\n");
 		std::string quoted = "\"" + test + "\"";
 		std::printf("%-24s -> %s\n", quoted.c_str(), isBalanced(test) ? "balanced" : "not balanced");
 	}

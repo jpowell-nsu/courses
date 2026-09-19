@@ -40,8 +40,7 @@ public class Stack<T> implements StackInterface<T> {
 
 	public void display() {
 		display(top);
-		System.out.println(" ");	// closes the "Base [" printed by the base case below;
-									// the original never printed a closing bracket
+		System.out.println("");
 	}  
 
 	private void display(Node<T> n) {

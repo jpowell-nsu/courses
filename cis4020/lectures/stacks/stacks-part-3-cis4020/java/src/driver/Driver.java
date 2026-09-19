@@ -13,45 +13,49 @@ public class Driver {
 
 	public static void main(String[] args) {
 		String[] tests = {
-				"(a + b) * [c - d]",
+				"(a+b)*[c-d]",
 				"{[()()]}",
-				"(a + b] * (c - d)",
-				"((a + b)",
-				"a + b) * (c - d",
+				"(a+b]*(c-d)",
+				"((a+b)",
+				"a+b)*(c-d",
+				"([)(])(",
+				"([)(])",
 				""
 			};
 	 
 			for (String test : tests) {
+				System.out.println("------------------------");
 				System.out.printf("%-24s -> %s%n", "\"" + test + "\"", isBalanced(test) ? "balanced" : "not balanced");
 			}
-	
 	}
 
 	public static boolean isBalanced(String expression) {
 		Stack<Character> stack = new Stack<Character>();
+		boolean balanced = true;
+
+		System.out.print("Char:   ");
 		stack.display();
-		for (int i = 0; i < expression.length(); i++) {
+		for (int i = 0; i < expression.length() && balanced; i++) {
 			char c = expression.charAt(i);
- 
+			System.out.print("Char: " + c + " ");
 			if (c == '(' || c == '[' || c == '{') {
 				stack.push(c);
-				stack.display();
 			} else if (c == ')' || c == ']' || c == '}') {
 				if (stack.isEmpty()) {
-					stack.display();
-					return false;	// a closing symbol with nothing open to match it
-				}
-				char open = stack.pop();
-				stack.display();
-				if (!matches(open, c)) {
-					return false;	// the wrong kind of bracket closed it
+					balanced = false; // a closing symbol with nothing open to match it
+				} else {
+					char open = stack.pop();
+					if (!matches(open, c)) {
+						balanced = false; // the wrong kind of bracket closed it
+					}
 				}
 			}
-			
 			// any other character (letters, digits, spaces, operators) is ignored
+			stack.display();
 		}
- 
-		return stack.isEmpty();	// anything still on the stack was never closed
+		// if it is balanced and the stack is empty, good
+		// if the stack is not empty, then it is not balanced
+		return (balanced && stack.isEmpty());
 	}
  
 	private static boolean matches(char open, char close) {

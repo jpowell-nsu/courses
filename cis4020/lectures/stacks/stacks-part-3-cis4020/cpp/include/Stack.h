@@ -81,9 +81,7 @@ public:
 
 	void display() const {
 		display(top);
-		std::cout << " " << std::endl;	// closes the "Base [" printed by the
-										// base case below; the original Java
-										// version never printed a closing bracket
+		std::cout << " " << std::endl;
 	}
 
 	void displayWithIdentities() const {
@@ -108,7 +106,7 @@ private:
 			std::cout << "Base ";
 		} else {
 			display(n->next);
-			std::cout << "(" << n->item << ") ";
+			std::cout << n->item;
 		}
 	}
 };
