@@ -1,0 +1,4 @@
+Talon Fighter 3 14 16 12 10 18
+Briar Rogue 12 5 14 16 10 8
+Corvin Cleric 10 12 7 14 16 18
+Elowen Druid 14 12 10 16 1 18
