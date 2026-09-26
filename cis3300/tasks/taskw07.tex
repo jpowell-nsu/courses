@@ -1,0 +1,617 @@
+\documentclass[11pt]{article}
+\usepackage{cis3300-accessible}
+\usepackage{amssymb}
+% Keep every table in reading order, where it appears in the source.
+\usepackage{float}
+% Same as accessibletable in cis3300-accessible.sty, but pinned in place
+% ([H]) so the grading tables stay in reading order instead of floating.
+\renewenvironment{accessibletable}[3]{%
+  \begin{table}[H]
+  \centering
+  \caption{#1}
+  \label{#2}
+  \begin{tabular}{#3}
+}{%
+  \end{tabular}
+  \end{table}
+}
+
+% This document is mostly Java. Listings that are not Java (shell
+% commands, CSV data, and expected output) override this locally
+% with language={}.
+\lstset{language=Java}
+
+\AssignmentMeta{Task W7: Arcade High Score Tracker}{CIS 3300, Intermediate Object-Oriented Programming}
+
+\begin{document}
+\AssignmentTitleBlock
+\AIDisclaimer
+
+\section{Scenario}
+
+You have been asked to help a small retro arcade turn a messy high score log
+into a clean, ranked report. The arcade keeps every score from every machine
+in one plain CSV file, in whatever order the scores happen to come in. Your
+program reads that file, ranks every entry from the highest score to the
+lowest, and writes a new CSV file with the finished report.
+
+For this task, you will do all of the work from the Linux command line:
+creating your project folders, writing your Java class in a plain text
+editor, compiling it, and running it. You will not use Eclipse or any other
+IDE for this task. The point is to see, by hand, everything an IDE normally
+does for you behind the scenes.
+
+This is an individual task. Complete it on your own, the same as any other
+Task or Lab in this course.
+
+\section{Learning Objectives}
+
+By the end of this task you will have practiced:
+
+\begin{itemize}
+  \item laying out a Java project by hand from the command line, in the same
+    \texttt{src}, \texttt{bin}, and \texttt{files} arrangement Eclipse has
+    been building for you automatically all semester
+  \item creating, editing, and saving a plain text file without an IDE
+  \item compiling a Java source file with \texttt{javac} and running the
+    compiled class with \texttt{java}, including the \texttt{-d} and
+    \texttt{-cp} flags
+  \item reading a CSV file line by line with \texttt{Scanner}, splitting each
+    line into fields, and storing the results in an \texttt{ArrayList}
+  \item sorting a list with a simple algorithm you already know, and writing
+    formatted output to a new file with \texttt{PrintWriter}
+  \item reading an existing program closely enough to make a small,
+    deliberate change to it yourself
+\end{itemize}
+
+\section{About Your Screenshots}
+
+Throughout this task, you will be asked to take a screenshot to show that
+you completed a step. A few things apply to all of them.
+
+\begin{itemize}
+  \item Take one screenshot per marked step below. There are six in total,
+    covering Sections 5 through 10.
+  \item A screenshot does not need to show everything you did for that step.
+    Get as much of the relevant terminal output on screen as you reasonably
+    can.
+  \item Each image must be an actual screenshot taken on your computer, not
+    a photo taken with a phone or camera. If you do not already know how to
+    take a screenshot on Xubuntu, look this up, for example a keyboard
+    shortcut or a built in screenshot tool.
+  \item \textbf{File naming.} Name each screenshot to match the section it
+    documents: \texttt{taskw07\_5.png} for Section 5, \texttt{taskw07\_6.png}
+    for Section 6, and so on through \texttt{taskw07\_10.png}.
+\end{itemize}
+
+\section{A Note on Editors}
+
+Everything in this task happens in a plain text editor and the terminal,
+not inside an IDE. Xubuntu already has \texttt{nano} and
+\texttt{vim} installed, so both are ready to use right away.
+
+\subsection{vim, the editor you are most likely to see me use}
+
+Open a file with vim by typing \texttt{vim FILENAME}. Vim starts in
+\textbf{Normal mode}, where the keys you press are commands rather than
+text. Press \texttt{i} to switch to \textbf{Insert mode}, where vim behaves
+like an ordinary editor and you can type normally. When you are done typing,
+press \texttt{Esc} to return to Normal mode.
+
+From Normal mode, a few commands that begin with a colon save the file and
+quit.
+
+\begin{lstlisting}[language={}]
+:w    # save (write) the file
+:q    # quit
+:wq   # save and quit in one step
+:q!   # quit without saving
+\end{lstlisting}
+
+\noindent\textbf{\color{coaNavy}If you ever feel stuck.} Press \texttt{Esc}
+to make sure you are in Normal mode, then type \texttt{:q!} and press Enter.
+That leaves vim without saving, no matter what state you were in. Almost
+everyone needs this at least once, so it is worth remembering early.
+
+\subsection{nano, a simpler fallback}
+
+If you would rather start with something gentler than vim, \texttt{nano} is
+a friendlier editor. Open a file with \texttt{nano FILENAME}, type normally,
+then save with \texttt{Ctrl+O}, press Enter to confirm the file name, and
+exit with \texttt{Ctrl+X}.
+
+\subsection{GVim and NeoVim, two more options}
+
+You are not required to install or use either of these for this task, but
+you should know they exist.
+
+\textbf{GVim} is a graphical version of vim. It opens in its own window with
+menus and mouse support, but the underlying editor, and every command shown
+above, is the same vim you already know. If you want to try it, install it
+with:
+
+\begin{lstlisting}[language={}]
+sudo apt install vim-gtk3
+\end{lstlisting}
+
+\noindent then open a file with \texttt{gvim FILENAME}.
+
+\textbf{NeoVim} is a modern, actively maintained reimplementation of vim. It
+runs in the terminal the same way vim does, keeps the same modes and most of
+the same commands, and adds a more current plugin system and configuration
+language underneath. If you want to try it, install it with:
+
+\begin{lstlisting}[language={}]
+sudo apt install neovim
+\end{lstlisting}
+
+\noindent then open a file with \texttt{nvim FILENAME}.
+
+\begin{accessibletable}{A quick comparison of the four editors mentioned in this task.}{tab:editors}{p{2.4cm}p{3.4cm}p{7.8cm}}
+\toprule
+\textbf{Editor} & \textbf{Interface} & \textbf{Notes} \\
+\midrule
+vim & Terminal only & Installed already. The editor you are most likely to see me use. \\
+nano & Terminal only & Installed already. The simplest option to start with. \\
+GVim & Graphical window & Same vim underneath, with menus and mouse support. Optional install. \\
+NeoVim & Terminal, with optional graphical front ends & A modern, plugin friendly reimplementation of vim. Optional install. \\
+\bottomrule
+\end{accessibletable}
+
+\noindent\textbf{\color{coaNavy}One more simple option.} Xubuntu also
+includes \textbf{Mousepad}, a basic graphical text editor, if you would rather
+work outside the terminal. Open it from the Applications menu, or type
+\texttt{mousepad FILENAME} from inside your project folder. Mousepad uses its
+own save dialog, so pay close attention to where each file is saved. If you
+open it from the Applications menu, the dialog may default to your home
+folder or Desktop. Make sure every file ends up in the correct place inside
+your project folder, for example \texttt{files/scores.csv} or
+\texttt{src/arcade/ArcadeScores.java}.
+
+\subsection{These editors in the wider industry}
+
+Vim and its descendants are not just classroom tools. Many professional
+developers, particularly in backend, systems, and open source work, use vim
+or NeoVim as their everyday editor, often alongside a terminal multiplexer
+such as tmux. A few videos, found with web search, give a sense of how this
+looks in practice.
+
+\begin{itemize}
+  \item \href{https://www.youtube.com/@Fireship}{Fireship (YouTube
+    channel)}, a widely watched programming channel whose short "100 Seconds
+    of Code" series includes quick explainers on both vim and NeoVim.
+  \item \href{https://youtube.com/ThePrimeagen}{ThePrimeagen (YouTube
+    channel)}, run by a former Netflix engineer who now codes and streams
+    almost entirely in NeoVim, with videos that walk through a real,
+    terminal based development setup.
+  \item \href{https://www.youtube.com/watch?v=tNZnLkRBYA8}{Lex Fridman
+    Podcast \#461: ThePrimeagen}, a long form conversation that includes a
+    section on why he uses NeoVim and how a terminal based workflow fits
+    into a professional engineering career.
+\end{itemize}
+
+\ResourcesDisclaimer
+
+\section{Project Setup}
+
+\noindent\textbf{\color{coaNavy}A note on your environment.} Your Xubuntu VM
+already includes Firefox, so you can open this assignment, Moodle, and GitHub
+entirely from inside the VM without switching back to your host machine. You
+may complete this task on a different Linux machine instead of the VM if you
+prefer, but you are responsible for installing and configuring everything
+yourself (a JDK, git, and so on). If you need a refresher on using the VM,
+see Lab W1.
+
+Open a terminal (\textbf{Applications > Terminal Emulator}, or
+\texttt{Ctrl+Alt+T}) and build the following folder structure by hand. This
+mirrors the \texttt{src}, \texttt{bin}, and \texttt{files} layout Eclipse has
+been building for you automatically all semester: \texttt{src} for your Java
+source files, \texttt{bin} for the compiled class files, and \texttt{files}
+for anything your program reads or writes.
+
+\begin{enumerate}[itemsep=2pt]
+  \item Create the project folders.
+\begin{lstlisting}[language={}]
+mkdir -p ~/cis3300/taskw07/src/arcade
+mkdir -p ~/cis3300/taskw07/bin
+mkdir -p ~/cis3300/taskw07/files
+\end{lstlisting}
+  \item Move into the project folder. You will run every command for the
+    rest of this task from here.
+\begin{lstlisting}[language={}]
+cd ~/cis3300/taskw07
+\end{lstlisting}
+  \item Confirm the structure.
+\begin{lstlisting}[language={}]
+ls -R
+\end{lstlisting}
+\end{enumerate}
+
+Take a screenshot of the \texttt{ls -R} output showing the \texttt{src},
+\texttt{bin}, and \texttt{files} folders, and save it as
+\texttt{taskw07\_5.png}.
+
+\section{Creating the Data File}
+
+The arcade's raw score log is a simple CSV file: a header row, then one row
+per score, with the player's name, the game title, and the score as an
+integer.
+
+Open a new file at \texttt{files/scores.csv} in the editor of your choice
+(vim, nano, GVim, NeoVim, or Mousepad) and type the following exactly as written,
+including the header row.
+
+\begin{lstlisting}[language={}]
+name,game,score
+Maria,Galaxy Invaders,15200
+Deshawn,Retro Racer,9800
+Priya,Galaxy Invaders,21300
+Wyatt,Pixel Dungeon,7600
+Alexis,Retro Racer,12500
+Noah,Pixel Dungeon,15200
+Grace,Galaxy Invaders,18400
+Malik,Retro Racer,9800
+Sofia,Pixel Dungeon,20100
+Ethan,Galaxy Invaders,11000
+\end{lstlisting}
+
+It is fine to copy and paste this data instead of typing it, but check the
+result carefully afterward. A paste from a PDF does not always come through
+cleanly, and extra spaces can sneak in around the commas. There should be no
+space before or after any comma in the file.
+
+Save the file, then confirm its contents from the command line.
+
+\begin{lstlisting}[language={}]
+cat files/scores.csv
+\end{lstlisting}
+
+Take a screenshot of the \texttt{cat} output and save it as
+\texttt{taskw07\_6.png}.
+
+\section{Creating the Java Source File}
+
+Below is the full program you will build. Read through it once before you
+start typing, so you know roughly what each part is doing.
+
+\texttt{ArcadeScores} does three things, in order: it reads every row of
+\texttt{files/scores.csv} into a list, it sorts that list from the highest
+score to the lowest using a simple selection sort, and it writes a new file,
+\texttt{files/ranked\_scores.csv}, with a rank number added to every row.
+
+\subsection{Reading the file}
+The \texttt{readScores} method opens \texttt{files/scores.csv} with a
+\texttt{Scanner}, reads and discards the header row, and then reads every
+remaining line. Each line is split on its commas into a \texttt{String[]}
+with three elements (name, game, score), and every one of those arrays is
+added to an \texttt{ArrayList}.
+
+\subsection{Sorting the list}
+The \texttt{sortByScoreDescending} method is a selection sort. For each
+position in the list, it scans the rest of the list for the highest
+remaining score, then swaps that row into the current position. This is the
+same idea as sorting a hand of cards by repeatedly picking the best card
+left and moving it to the front.
+
+\subsection{Writing the report}
+The \texttt{writeRanking} method opens \texttt{files/ranked\_scores.csv}
+with a \texttt{PrintWriter}, writes a header row, and then writes one line
+per row in the now sorted list, numbering them starting at 1.
+
+Create the file \texttt{src/arcade/ArcadeScores.java} in your editor and
+type the following exactly as written.
+
+\begin{lstlisting}
+package arcade;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+/*
+ * ArcadeScores reads a raw high score log from files/scores.csv and
+ * writes a ranked report to files/ranked_scores.csv. Each input row
+ * has three fields: a player name, a game title, and an integer
+ * score. The output adds a rank column, with the highest score
+ * ranked first.
+ */
+public class ArcadeScores {
+
+    public static void main(String[] args) throws IOException {
+
+        String inputPath = "files/scores.csv";
+        String outputPath = "files/ranked_scores.csv";
+
+        List<String[]> rows = readScores(inputPath);
+        sortByScoreDescending(rows);
+        writeRanking(rows, outputPath);
+
+        System.out.println("Wrote " + rows.size() + " ranked scores to " + outputPath);
+    }
+
+    // Reads scores.csv, skips the header row, and returns each data
+    // row as a String array: {name, game, score}.
+    private static List<String[]> readScores(String path) throws FileNotFoundException {
+        List<String[]> rows = new ArrayList<>();
+        Scanner fileScanner = new Scanner(new File(path));
+
+        if (fileScanner.hasNextLine()) {
+            fileScanner.nextLine(); // skip the header row
+        }
+
+        while (fileScanner.hasNextLine()) {
+            String line = fileScanner.nextLine();
+            if (line.isBlank()) {
+                continue;
+            }
+            rows.add(line.split(","));
+        }
+
+        fileScanner.close();
+        return rows;
+    }
+
+    // Sorts rows by score, highest first, using a simple selection
+    // sort. On each pass, it finds the highest remaining score and
+    // swaps it into place.
+    private static void sortByScoreDescending(List<String[]> rows) {
+        for (int i = 0; i < rows.size() - 1; i++) {
+            int maxIndex = i;
+            for (int j = i + 1; j < rows.size(); j++) {
+                int scoreJ = Integer.parseInt(rows.get(j)[2]);
+                int scoreMax = Integer.parseInt(rows.get(maxIndex)[2]);
+                if (scoreJ > scoreMax) {
+                    maxIndex = j;
+                }
+            }
+            String[] temp = rows.get(i);
+            rows.set(i, rows.get(maxIndex));
+            rows.set(maxIndex, temp);
+        }
+    }
+
+    // Writes the ranked rows to a new CSV file, numbering them
+    // starting at 1 in the order they are given.
+    private static void writeRanking(List<String[]> rows, String path) throws IOException {
+        PrintWriter writer = new PrintWriter(new FileWriter(path));
+        writer.println("rank,name,game,score");
+
+        int rank = 1;
+        for (String[] row : rows) {
+            String name = row[0];
+            String game = row[1];
+            String score = row[2];
+            writer.println(rank + "," + name + "," + game + "," + score);
+            rank++;
+        }
+
+        writer.close();
+    }
+}
+\end{lstlisting}
+
+It is fine to copy and paste this code instead of typing it, but you will
+likely need to fix the line spacing and tabs afterward, since a paste from a
+PDF does not preserve indentation cleanly.
+\textbf{\color{coaNavy}Formatting matters.} Code that is not formatted nicely
+will not receive credit.
+
+Save the file when you are done typing.
+
+Take a screenshot of your editor with \texttt{ArcadeScores.java} open,
+showing at least part of the code on screen, and save it as
+\texttt{taskw07\_7.png}.
+
+\section{Compiling and Running}
+
+The \texttt{javac} command compiles your source file into bytecode, and the
+\texttt{java} command runs it. Because your class lives in the
+\texttt{arcade} package, both commands need a little more than the bare file
+name.
+
+\begin{enumerate}[itemsep=2pt]
+  \item Compile the source file into the \texttt{bin} folder.
+\begin{lstlisting}[language={}]
+javac -d bin src/arcade/ArcadeScores.java
+\end{lstlisting}
+    The \texttt{-d bin} flag tells \texttt{javac} where to put the compiled
+    \texttt{.class} file. Because the class declares
+    \texttt{package arcade;}, \texttt{javac} creates an \texttt{arcade}
+    folder inside \texttt{bin} for you.
+  \item Confirm the class file was created.
+\begin{lstlisting}[language={}]
+ls bin/arcade
+\end{lstlisting}
+    You should see \texttt{ArcadeScores.class}. This is the compiled
+    bytecode; it is what \texttt{java} actually runs, not the \texttt{.java}
+    source file.
+  \item Run the compiled class.
+\begin{lstlisting}[language={}]
+java -cp bin arcade.ArcadeScores
+\end{lstlisting}
+    The \texttt{-cp bin} flag tells \texttt{java} where to look for compiled
+    classes, and \texttt{arcade.ArcadeScores} is the fully qualified class
+    name (package name, a dot, then the class name), not a file name.
+\end{enumerate}
+
+If everything worked, you will see a line similar to this.
+
+\begin{lstlisting}[language={}]
+Wrote 10 ranked scores to files/ranked_scores.csv
+\end{lstlisting}
+
+Take one screenshot showing the compile command, the \texttt{ls bin/arcade}
+output, the run command, and its printed output together in one screen, and
+save it as \texttt{taskw07\_8.png}.
+
+\section{Checking the Output}
+
+Look at the file your program wrote.
+
+\begin{lstlisting}[language={}]
+cat files/ranked_scores.csv
+\end{lstlisting}
+
+If your program worked correctly and you typed the data file exactly as
+given, your output should match the following exactly.
+
+\begin{lstlisting}[language={}]
+rank,name,game,score
+1,Priya,Galaxy Invaders,21300
+2,Sofia,Pixel Dungeon,20100
+3,Grace,Galaxy Invaders,18400
+4,Noah,Pixel Dungeon,15200
+5,Maria,Galaxy Invaders,15200
+6,Alexis,Retro Racer,12500
+7,Ethan,Galaxy Invaders,11000
+8,Malik,Retro Racer,9800
+9,Deshawn,Retro Racer,9800
+10,Wyatt,Pixel Dungeon,7600
+\end{lstlisting}
+
+If your file does not match, do not move on yet. Compare your
+\texttt{scores.csv} against Section 6 character for character, and compare
+your \texttt{ArcadeScores.java} against Section 7 the same way. A single
+missing comma or a mistyped variable name is the most common cause.
+
+Take a screenshot of your own \texttt{cat} output and save it as
+\texttt{taskw07\_9.png}.
+
+\section{The Challenge: Add a Medal Column}
+
+The arcade owner has one more request. The ranked report should show a
+medal for the top three scores: \texttt{Gold} for rank 1, \texttt{Silver}
+for rank 2, and \texttt{Bronze} for rank 3. Every other row should show a
+dash, \texttt{-}, in that column instead.
+
+The finished output should look like this, with your own column added.
+
+\begin{lstlisting}[language={}]
+rank,name,game,score,medal
+1,Priya,Galaxy Invaders,21300,Gold
+2,Sofia,Pixel Dungeon,20100,Silver
+3,Grace,Galaxy Invaders,18400,Bronze
+4,Noah,Pixel Dungeon,15200,-
+\end{lstlisting}
+
+You are not given the code for this part.
+
+\begin{itemize}
+  \item Only the part of the program that writes the output needs to
+    change. You do not need to touch how the file is read or how it is
+    sorted.
+  \item The header row needs a new column name.
+  \item Inside the loop that writes each row, you already have the current
+    \texttt{rank} as a number. Decide what that row's medal should be based
+    on that number, and add it to the line you write.
+\end{itemize}
+
+Edit \texttt{src/arcade/ArcadeScores.java} in your editor, save it, then
+recompile and rerun it the same way you did in Section 8.
+
+\begin{lstlisting}[language={}]
+javac -d bin src/arcade/ArcadeScores.java
+java -cp bin arcade.ArcadeScores
+\end{lstlisting}
+
+Check the result.
+
+\begin{lstlisting}[language={}]
+cat files/ranked_scores.csv
+\end{lstlisting}
+
+Take one screenshot showing your recompile, rerun, and the final
+\texttt{cat} output together in one screen, and save it as
+\texttt{taskw07\_10.png}.
+
+\section{Grading}
+
+This task is worth 29 points. Each item below is either met or not met; there is no partial credit within an item. Each table lists one category of items with its point value.
+
+\medskip
+\noindent\textbf{\color{coaNavy}Formatting.} Severely poor formatting may result in a zero for the entire task.
+
+\begin{accessibletable}{Grading checklist, Submission and Setup (1 point each, 4 points).}{tab:g-setup}{c L{11.6cm} c}
+\toprule
+\textbf{Met} & \textbf{Item} & \textbf{Points} \\
+\midrule
+$\square$ & \texttt{taskw07} folder is present in the \texttt{cis3300} repository, following the structure shown in Section 5 & 1 \\
+$\square$ & \texttt{ArcadeScores.java} compiles without errors from the command line & 1 \\
+$\square$ & \texttt{ArcadeScores.java} runs without errors from the command line & 1 \\
+$\square$ & \texttt{bin} folder is not included in the submitted repository & 1 \\
+\bottomrule
+\end{accessibletable}
+
+\begin{accessibletable}{Grading checklist, Screenshots (1 point each, 6 points).}{tab:g-shots}{c L{11.6cm} c}
+\toprule
+\textbf{Met} & \textbf{Item} & \textbf{Points} \\
+\midrule
+$\square$ & \texttt{taskw07\_5.png} is present, showing the \texttt{ls -R} output from Section 5 & 1 \\
+$\square$ & \texttt{taskw07\_6.png} is present, showing the \texttt{cat} output from Section 6 & 1 \\
+$\square$ & \texttt{taskw07\_7.png} is present, showing the editor open with \texttt{ArcadeScores.java} from Section 7 & 1 \\
+$\square$ & \texttt{taskw07\_8.png} is present, showing the compile and run output from Section 8 & 1 \\
+$\square$ & \texttt{taskw07\_9.png} is present, showing the \texttt{cat} output from Section 9 & 1 \\
+$\square$ & \texttt{taskw07\_10.png} is present, showing the recompile, rerun, and final \texttt{cat} output from Section 10 & 1 \\
+\bottomrule
+\end{accessibletable}
+
+\begin{accessibletable}{Grading checklist, Base Program Correctness (2 points each, 10 points).}{tab:g-base}{c L{11.6cm} c}
+\toprule
+\textbf{Met} & \textbf{Item} & \textbf{Points} \\
+\midrule
+$\square$ & \texttt{files/scores.csv} contains the data exactly as given, unmodified & 2 \\
+$\square$ & \texttt{readScores} correctly reads all ten rows, skipping the header row & 2 \\
+$\square$ & \texttt{sortByScoreDescending} correctly sorts the list from highest score to lowest & 2 \\
+$\square$ & \texttt{writeRanking} writes \texttt{files/ranked\_scores.csv} with a header row and rank numbers starting at 1 & 2 \\
+$\square$ & Output in \texttt{files/ranked\_scores.csv} matched the Expected Output in Section 9 before the challenge change & 2 \\
+\bottomrule
+\end{accessibletable}
+
+\begin{accessibletable}{Grading checklist, The Challenge: Medal Column (2 points each, 4 points).}{tab:g-challenge}{c L{11.6cm} c}
+\toprule
+\textbf{Met} & \textbf{Item} & \textbf{Points} \\
+\midrule
+$\square$ & Header row includes a medal column, and the reading and sorting logic is unchanged from the base program & 2 \\
+$\square$ & Every row shows the correct medal (\texttt{Gold}, \texttt{Silver}, \texttt{Bronze}, or a dash) for its rank & 2 \\
+\bottomrule
+\end{accessibletable}
+
+\begin{accessibletable}{Grading checklist, Code Quality (1 point each, 5 points).}{tab:g-quality}{c L{11.6cm} c}
+\toprule
+\textbf{Met} & \textbf{Item} & \textbf{Points} \\
+\midrule
+$\square$ & Indentation is consistent throughout \texttt{ArcadeScores.java} & 1 \\
+$\square$ & Code is well formatted and follows standard Java coding conventions & 1 \\
+$\square$ & The header comment block is still present at the top of the file & 1 \\
+$\square$ & No leftover debug output or commented-out code beyond what was provided & 1 \\
+$\square$ & No unrequested extra code or output added beyond what the assignment asked for & 1 \\
+\bottomrule
+\end{accessibletable}
+
+\section{Submission}
+
+Remember that your Xubuntu VM includes Firefox, so you can submit your work
+directly from the VM without moving files to your host machine first.
+
+\begin{enumerate}[itemsep=2pt]
+  \item Inside your \texttt{cis3300} repository, you should have a
+    \texttt{taskw07} folder containing your \texttt{src} and \texttt{files}
+    folders, and your six screenshots. Do not include the \texttt{bin}
+    folder; compiled class files do not belong in your repository.
+  \item Add the \texttt{taskw07} folder to your repository, using either
+    option:
+    \begin{itemize}
+      \item commit and push from the terminal with git, or
+      \item upload the folder through the GitHub website in Firefox (leave
+        out the \texttt{bin} folder).
+    \end{itemize}
+  \item Return to Task W7 in Moodle and type \texttt{done} in the text
+    submission box. Do not upload images to the submission box.
+\end{enumerate}
+
+\end{document}
