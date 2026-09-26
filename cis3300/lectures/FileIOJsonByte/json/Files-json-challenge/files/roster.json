@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Priya Nair",
+    "role": "Engineer",
+    "health": 92,
+    "morale": 88.5,
+    "onDuty": true,
+    "skills": ["Reactor Maintenance", "Spacewalk Certified"]
+  },
+  {
+    "name": "Dax Okonkwo",
+    "role": "Botanist",
+    "health": 78,
+    "morale": 65.0,
+    "onDuty": false,
+    "skills": ["Hydroponics"]
+  },
+  {
+    "name": "Lin Sato",
+    "role": "Medic",
+    "health": 100,
+    "morale": 95.0,
+    "onDuty": true,
+    "skills": ["Field Surgery", "Radiation Treatment"]
+  },
+  {
+    "name": "Omar Reyes",
+    "role": "Pilot",
+    "health": 41,
+    "morale": 52.0,
+    "onDuty": true,
+    "skills": ["Orbital Navigation"]
+  },
+  {
+    "name": "Kira Voss",
+    "role": "Geologist",
+    "health": 35,
+    "morale": 70.0,
+    "onDuty": false,
+    "skills": ["Mineral Analysis", "Drone Operation"]
+  }
+]

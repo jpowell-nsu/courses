@@ -1,0 +1,32 @@
+[
+  {
+    "skills": [
+      "Reactor Maintenance",
+      "Spacewalk Certified"
+    ],
+    "role": "Engineer",
+    "name": "Priya Nair",
+    "health": 92,
+    "morale": 88.5,
+    "onDuty": true
+  },
+  {
+    "skills": ["Hydroponics"],
+    "role": "Botanist",
+    "name": "Dax Okonkwo",
+    "health": 78,
+    "morale": 65,
+    "onDuty": false
+  },
+  {
+    "skills": [
+      "Field Surgery",
+      "Radiation Treatment"
+    ],
+    "role": "Medic",
+    "name": "Lin Sato",
+    "health": 100,
+    "morale": 95,
+    "onDuty": true
+  }
+]
