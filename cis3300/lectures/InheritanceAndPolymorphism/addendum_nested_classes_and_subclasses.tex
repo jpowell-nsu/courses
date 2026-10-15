@@ -1,0 +1,247 @@
+% ============================================================================
+%  addendum_nested_classes_and_subclasses.tex
+%  CIS 3300 class notes, Inheritance and Polymorphism, addendum.
+%  Built from class-notes-template-cis3300.tex. Requires classnotes.sty in the
+%  same folder. Compile twice with pdflatex so "Page X of Y" resolves.
+% ============================================================================
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+
+\usepackage[pagenumbers]{classnotes}
+
+% Sets the PDF title and language. Both are accessibility requirements.
+\classnotesmeta{CIS 3300 Notes Addendum: Nested Classes and Subclasses}
+
+% Java is the default listing style; terminal output uses [style=sh].
+\lstset{style=java}
+
+\begin{document}
+
+\classnotestitle{CIS 3300 \quad$\cdot$\quad INHERITANCE AND POLYMORPHISM, ADDENDUM}{Nested Classes and Subclasses}{Where a class lives compared with what a class is}
+
+\notebox{This addendum started with a student's question.}{After we began inheritance, a student
+asked how a nested class is different from a subclass. It is a fantastic question. Both ideas involve
+one class being connected to another, both came up this semester within a few weeks of each other,
+and the words ``inner class'' and ``subclass'' sound like they should mean almost the same thing.
+They do not, and working out exactly why is a good way to understand both. Questions like this one,
+where you notice that two ideas look alike and stop to ask how they really differ, are how
+understanding gets deeper. Please keep asking them.}
+
+\noindent
+This addendum goes with Part 1 of the inheritance notes and with the first set of review notes,
+Static Members and Nested Classes. It uses examples from both.
+
+\notebox{A note before you begin.}{These are my notes from over the years, cleaned up so
+they are readable. They are not a study guide, and they are not gospel: not everything here appears
+in a lecture, and not every topic has notes yet. I write from memory and revise every semester. I
+also use AI to help convert documents to \LaTeX{}, check for issues, and add explanations. I do not
+trust it completely, so I am still editing, and a typo or imprecise statement can survive longer
+than it should. Java also changes over time, though the basics we cover are resilient. If you find
+something that looks wrong, contradicts the book, or does not behave the way I claim when you run
+it, tell me. You will be doing the other students a favor, and you will understand the material
+better for having caught it. The textbook is the tiebreaker, and the compiler beats us both. These
+notes sometimes go beyond the book, but they do not replace the assigned chapters or the recorded
+lectures, and neither of those replaces the notes. Read the chapter, watch the lecture, and study
+the notes.}
+
+% ============================================================================
+\section{The Short Answer}
+
+The two ideas answer different questions.
+
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{A nested class} is about \emph{where} a class is declared. It is written inside
+        another class's body. That affects its name, who can see it, and, for an inner class, which
+        outer object it belongs to.
+  \item \textbf{A subclass} is about \emph{what type} a class is. It extends another class, so it
+        inherits that class's members and can be used anywhere that class is expected.
+\end{itemize}
+
+The two ideas are independent of each other. A class can be nested, a subclass, both, or neither.
+
+% ============================================================================
+\section{Nested Classes, a Quick Review}
+
+In the review notes, \cmd{Roster} held two nested classes:
+
+\begin{lstlisting}
+public class Roster {
+    private final String courseCode;
+    private final ArrayList<Student> students = new ArrayList<>();
+
+    public static class Stats { ... }   // static nested class
+    private class Report { ... }        // inner class
+}
+\end{lstlisting}
+
+\begin{itemize}[leftmargin=1.4em]
+  \item Its full name includes the outer class: \cmd{Roster.Stats}.
+  \item It can be \cmd{private}, which hides it from every class outside \cmd{Roster}.
+  \item It can read the outer class's \cmd{private} members, because it is part of the same class
+        body. \cmd{Report} reads \cmd{courseCode} and \cmd{students} directly.
+  \item An inner class (one without \cmd{static}) is linked to one particular \cmd{Roster} object
+        through a hidden reference. That relationship is closer to has-a than is-a: a \cmd{Report}
+        \emph{belongs to} a roster. It is not \emph{a kind of} roster.
+  \item It inherits nothing from \cmd{Roster}. A \cmd{Report} is not a \cmd{Roster}, and you cannot
+        store one in a \cmd{Roster} variable.
+\end{itemize}
+
+% ============================================================================
+\section{Subclasses, a Quick Review}
+
+In Part 1 of the inheritance notes, \cmd{Manager} extended \cmd{Employee}:
+
+\begin{lstlisting}
+public class Manager extends Employee { ... }
+\end{lstlisting}
+
+\begin{itemize}[leftmargin=1.4em]
+  \item It is a separate class, usually in its own file, with its own name.
+  \item It inherits \cmd{Employee}'s fields (as data) and its accessible methods, and it can
+        override those methods.
+  \item It \emph{cannot} read \cmd{Employee}'s \cmd{private} members. It has to use
+        \cmd{Employee}'s methods, or call them with \cmd{super}.
+  \item A \cmd{Manager} object is one object that contains the \cmd{Employee} part. There is no
+        separate outer object and no hidden link.
+  \item It \emph{is an} \cmd{Employee}, so polymorphism applies: a \cmd{Manager} can go in an
+        \cmd{Employee} variable, array, list, or parameter.
+\end{itemize}
+
+% ============================================================================
+\section{Seeing the Difference in Code}
+
+Here is a small \cmd{Employee} class with a static nested class, \cmd{Badge}, plus a
+\cmd{Manager} subclass. The two relationships behave in opposite ways.
+
+\begin{lstlisting}
+public class Employee {
+    private String name;
+
+    public Employee(String name) {
+        this.name = name;
+    }
+
+    // A static nested class: declared inside Employee, but not a kind of Employee.
+    public static class Badge {
+        public static String print(Employee e) {
+            return "STAFF: " + e.name;   // compiles: same class body
+        }
+    }
+}
+
+public class Manager extends Employee {
+    public Manager(String name) {
+        super(name);
+    }
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+Employee ada = new Employee("Ada");
+Employee grace = new Manager("Grace");     // a Manager is an Employee
+System.out.println(Employee.Badge.print(ada));
+System.out.println(Employee.Badge.print(grace));
+\end{lstlisting}
+
+\begin{lstlisting}[style=sh]
+STAFF: Ada
+STAFF: Grace
+\end{lstlisting}
+
+Now try two things the relationships do not allow. First, the subclass reaching for the
+\cmd{private} field:
+
+\begin{lstlisting}
+public String label() {   // inside Manager
+    return name;          // does not compile
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=sh]
+error: name has private access in Employee
+\end{lstlisting}
+
+Second, treating the nested class as if it were a kind of \cmd{Employee}:
+
+\begin{lstlisting}
+Employee e = new Employee.Badge();   // does not compile
+\end{lstlisting}
+
+\begin{lstlisting}[style=sh]
+error: incompatible types: Badge cannot be converted to Employee
+\end{lstlisting}
+
+So the nested class has the access, but not the type. The subclass has the type, but not the
+access.
+
+% ============================================================================
+\section{Side by Side}
+
+\begin{classtable}
+\captionof{table}{Nested classes compared with subclasses.}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{>{\bfseries}L{1.9in} L{2.1in} L{2.0in}}
+\toprule
+\rowcolor{navy!8}
+Question & Nested class & Subclass \\
+\midrule
+What it describes & Where the class is declared & What type the class is \\
+How you write it & Inside another class's body, with or without \cmd{static} & With \cmd{extends} \\
+Relationship & Belongs to the outer class; an inner class belongs to one outer object & Is-a \\
+Inherits the other class's members? & No & Yes \\
+Reads the other class's \cmd{private} members? & Yes & No \\
+Usable where the other class is expected? & No & Yes \\
+How many objects? & An inner object and its outer object are two separate objects & One object, which contains the superclass part \\
+\bottomrule
+\end{tabular}
+\end{classtable}
+
+% ============================================================================
+\section{When a Class Is Both}
+
+Because the ideas are independent, one class can be nested \emph{and} a subclass. You have already
+seen two examples.
+
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{\cmd{ConstructorOrderDemo} in Part 3.} \cmd{Base} and \cmd{Derived} are both static
+        nested classes inside \cmd{ConstructorOrderDemo}, and \cmd{Derived extends Base}. The
+        nesting only keeps the whole demo in one file. The \cmd{extends} is what makes the
+        constructors chain.
+  \item \textbf{The anonymous class in the review notes.} The expression
+        \cmd{new StudentFilter() { ... }} declares a class inside a method, so it is nested. That
+        same class implements \cmd{StudentFilter}, so it can be passed anywhere a
+        \cmd{StudentFilter} is expected. An anonymous class can extend a class in the same way.
+\end{itemize}
+
+In each case, ask the two questions separately: where is it declared, and what type is it?
+
+% ============================================================================
+\section{A Quick Test}
+
+When you are deciding which one you need, ask:
+
+\begin{enumerate}[leftmargin=1.6em]
+  \item \textbf{Is this thing a kind of the other class?} If yes, and it should be usable
+        anywhere the other class is, you want a subclass.
+  \item \textbf{Does it exist only to help the other class?} If yes, a nested class keeps it close
+        and lets you hide it. Start with a static nested class.
+  \item \textbf{Does it belong to one particular object of the other class?} If yes, an inner
+        class gives it that link to the outer object.
+\end{enumerate}
+
+% ============================================================================
+\section{Try It}
+
+\begin{enumerate}[leftmargin=1.6em]
+  \item Move \cmd{Badge} out of \cmd{Employee} and into its own file, as an ordinary top-level
+        class. Which line stops compiling, and why? What does that tell you about what nesting
+        gave \cmd{Badge}?
+  \item Write a \cmd{private static class} inside \cmd{Manager} that formats a manager's title. Is
+        that class a subclass of anything? What can it see?
+  \item For each of these, decide whether a subclass, a static nested class, or an inner class
+        fits best, and explain why in one sentence: a \cmd{Truck} in a rental program; the
+        \cmd{Stats} summary of a \cmd{Roster}; an object that steps through the items of one
+        particular list.
+\end{enumerate}
+
+\end{document}
