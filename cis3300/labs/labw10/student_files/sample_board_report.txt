@@ -1,0 +1,27 @@
+Commission Board Report: Coppertop Guild Hall
+
+Kind      ID     Title                                              Client                               Rank       Payout     Share
+Hunt      C-101  Clear the Mill Cellar                              Widow Harrow                         copper     240.00    216.00
+Escort    C-102  A Pilgrim to Saint Aldric's Shrine                 Brother Tomas                        copper      60.00     54.00
+Delivery  C-103  Medicine to Fenwick                                Apothecary Lune                      copper      72.00     64.80  rush
+Retrieval C-104  The Mayor's Signet Ring                            Mayor Calloway                       silver      75.00     67.50
+Hunt      C-105  The Ridge Wyvern                                   Ridgeback Shepherds                  gold       320.00    288.00
+Escort    C-106  Merchant Caravan to Port Salis                     Velda Trading Company                silver     525.00    472.50
+Delivery  C-107  Letters to the Northern Watch                      Captain Ord                          copper     120.00    108.00
+Retrieval C-108  A Lost Spellbook                                   Archmage Ylsa                        gold       150.00    135.00
+Hunt      C-109  Bandit Camp at Crow's Ford                         Town Council                         silver     600.00    540.00
+Escort    C-110  A Bride to Thornwick                               House Merrow                         silver     120.00    108.00
+Delivery  C-111  Wedding Cake to Thornwick                          Baker Pell                           copper     105.00     94.50  rush
+Hunt      C-112  The Marsh Troll                                    Fisherfolk of Lowmere                gold       280.00    252.00
+
+Totals by kind:
+  Hunt          1440.00
+  Escort         705.00
+  Delivery       297.00
+  Retrieval      225.00
+  All           2667.00
+  Guild cut      266.70
+
+Danger Board (threat 7 or higher):
+  C-105 The Ridge Wyvern: Wyvern, threat 8
+  C-112 The Marsh Troll: Troll, threat 7
