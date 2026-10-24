@@ -1,0 +1,32 @@
+Commission Board Report: Coppertop Guild Hall
+
+Kind      ID     Title                                              Client                               Rank       Payout     Share   Bonus
+Hunt      C-101  Clear the Mill Cellar                              Widow Harrow                         copper     240.00    216.00    5.00
+Escort    C-102  A Pilgrim to Saint Aldric's Shrine                 Brother Tomas                        copper      60.00     54.00    0.00
+Delivery  C-103  Medicine to Fenwick                                Apothecary Lune                      copper      72.00     64.80    0.00  rush
+Retrieval C-104  The Mayor's Signet Ring                            Mayor Calloway                       silver      75.00     67.50    0.00
+Hunt      C-105  The Ridge Wyvern                                   Ridgeback Shepherds                  gold       320.00    288.00   40.00
+Escort    C-106  Merchant Caravan to Port Salis                     Velda Trading Company                silver     525.00    472.50    0.00
+Delivery  C-107  Letters to the Northern Watch                      Captain Ord                          copper     120.00    108.00   25.00
+Retrieval C-108  A Lost Spellbook                                   Archmage Ylsa                        gold       150.00    135.00    0.00
+Hunt      C-109  Bandit Camp at Crow's Ford                         Town Council                         silver     600.00    540.00   15.00
+Escort    C-110  A Bride to Thornwick                               House Merrow                         silver     120.00    108.00    0.00
+Delivery  C-111  Wedding Cake to Thornwick                          Baker Pell                           copper     105.00     94.50    0.00  rush
+Hunt      C-112  The Marsh Troll                                    Fisherfolk of Lowmere                gold       280.00    252.00   35.00
+Delivery  C-113  Lamp Oil Through the Kessel Pass                   Innkeeper Rosa                       silver      90.00     81.00   25.00
+Retrieval C-114  The Abbey's Silver Reliquary                       Abbot Crane                          silver     140.00    126.00    0.00
+Hunt      C-115  Wolves in the Greyhollow Orchards                  Farmer Odell                         copper     480.00    432.00   15.00
+Escort    C-116  Students to the Brightwater Library                Master Quill                         copper      60.00     54.00    0.00
+
+Totals by kind:
+  Hunt              1920.00
+  Escort             765.00
+  Delivery           387.00
+  Retrieval          365.00
+  All               3437.00
+  Guild cut          343.70
+  Hazard bonuses     160.00
+
+Danger Board (threat 7 or higher):
+  C-105 The Ridge Wyvern: Wyvern, threat 8
+  C-112 The Marsh Troll: Troll, threat 7

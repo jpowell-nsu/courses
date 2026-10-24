@@ -1,0 +1,48 @@
+Assignments Report: Coppertop Guild Hall
+
+  ID     Kind      Title                                                  Share   Bonus  Earnings
+
+Brenna Ashford (gold warrior)
+  C-101  Hunt      Clear the Mill Cellar                                 216.00    5.00    221.00
+  C-105  Hunt      The Ridge Wyvern                                      288.00   40.00    328.00
+  C-112  Hunt      The Marsh Troll                                       252.00   35.00    287.00
+  Total earnings                                                                           836.00
+
+Corin Vale (gold scholar)
+  C-102  Escort    A Pilgrim to Saint Aldric's Shrine                     54.00    0.00     54.00
+  C-110  Escort    A Bride to Thornwick                                  108.00    0.00    108.00
+  Total earnings                                                                           162.00
+
+Oswin Fell (gold battlemage)
+  C-103  Delivery  Medicine to Fenwick                                    64.80    0.00     64.80
+  C-109  Hunt      Bandit Camp at Crow's Ford                            540.00   15.00    555.00
+  Total earnings                                                                           619.80
+
+Mirela Thorne (silver healer, licensed)
+  C-104  Retrieval The Mayor's Signet Ring                                67.50    0.00     67.50
+  C-113  Delivery  Lamp Oil Through the Kessel Pass                       81.00   25.00    106.00
+  C-114  Retrieval The Abbey's Silver Reliquary                          126.00    0.00    126.00
+  Total earnings                                                                           299.50
+
+Dax Holloway (silver ranger)
+  C-106  Escort    Merchant Caravan to Port Salis                        472.50    0.00    472.50
+  C-115  Hunt      Wolves in the Greyhollow Orchards                     432.00   15.00    447.00
+  Total earnings                                                                           919.50
+
+Iris Quell (silver courier)
+  C-107  Delivery  Letters to the Northern Watch                         108.00   25.00    133.00
+  Total earnings                                                                           133.00
+
+Hal Brindle (copper warrior)
+  C-111  Delivery  Wedding Cake to Thornwick                              94.50    0.00     94.50
+  Total earnings                                                                            94.50
+
+Pip Marsh (copper courier)
+  C-116  Escort    Students to the Brightwater Library                    54.00    0.00     54.00
+  Total earnings                                                                            54.00
+
+Sera Lin (copper scout)
+  No commissions
+
+Unassigned (no eligible member):
+  C-108  Retrieval A Lost Spellbook                                   gold
