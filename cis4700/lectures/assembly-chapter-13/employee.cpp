@@ -20,12 +20,9 @@ protected:
 public:
     // The constructor receives the character array as an argument and makes
     // its own heap copy, so the object owns its name.
-    Person(const char* inName, int inAge) : name(nullptr), age(inAge) {
+    Person(char* inName, int inAge) : name(inName), age(inAge) {
         int len = rawLength(inName);
-        name = new char[len + 1];
-        for (int i = 0; i <= len; i++) {   // <= copies the terminating '\0'
-            name[i] = inName[i];
-        }
+//	name = inName;
     }
 
     // Virtual destructor, so deleting through a Person* runs ~Employee first.
@@ -69,7 +66,7 @@ private:
     double hourlyRate;
 
 public:
-    Employee(const char* inName, int inAge, int inId, double inRate)
+    Employee(char* inName, int inAge, int inId, double inRate)
         : Person(inName, inAge), employeeId(inId), hourlyRate(inRate) {}
 
     ~Employee() override {
