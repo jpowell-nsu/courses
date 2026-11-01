@@ -1,0 +1,11 @@
+Error Log: Prairie Ridge Weather Network
+File: readings.csv
+Lines skipped: 8
+  line 2: date is not a valid date: "2026-06-31"
+  line 9: expected 5 fields but found 4
+  line 19: high is not a number: "9O.2"
+  line 21: high 68.2 is below low 92.5
+  line 24: unknown station "FOX"
+  line 34: high must be from -80.0 to 140.0, but was 158.0
+  line 36: precipitation must be 0 or more, but was -0.2
+  line 41: low is not a number: ""
