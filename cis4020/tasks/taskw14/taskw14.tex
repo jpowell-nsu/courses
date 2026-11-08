@@ -1,0 +1,228 @@
+% ============================================================
+% Task W14: Hashing  (CIS 4020)
+% Requires cis4020-accessible.sty in the same folder.
+% Compile twice with pdflatex so "Page X of Y" resolves.
+% ============================================================
+\documentclass[11pt]{article}
+\usepackage{cis4020-accessible}
+\usepackage{amsmath}
+
+\AssignmentMeta{Task W14: Hashing}{Hash It Out}
+
+% Figure and table references in black (body text color) instead of the
+% style file's teal link color. They are still clickable links.
+\hypersetup{linkcolor=coaBodyText}
+
+% Block paragraphs with no first-line indent.
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+
+% Keep a table and its caption together without a float, so reading
+% order in the tagged PDF matches the page.
+\newenvironment{inlinefig}{\par\noindent\begin{minipage}{\linewidth}\centering}{\end{minipage}\par\medskip}
+
+\begin{document}
+\AssignmentTitleBlock
+\AIDisclaimer
+
+\section{Overview}
+
+This task checks that you understand how hash tables work, not just that you can fill one
+in. There are four required problems, all done by hand and all about the size of an exam
+question.
+
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{Problem 1, Trace It:} build a small table four ways, then remove a key and
+    see what that does to later searches.
+  \item \textbf{Problem 2, Find the Mistakes:} check a classmate's work and correct it.
+  \item \textbf{Problem 3, Predict and Justify:} say what will happen before it happens,
+    and explain why.
+  \item \textbf{Problem 4, Use the Formulas Backward:} start from a performance goal and
+    work out the table size you need.
+\end{itemize}
+
+You will not have Excel or a calculator program on the exam, so work these by hand. A basic
+calculator is fine for Problem 4.
+
+\section{Submitting Your Work}
+
+\subsection*{If you find something that needs to be debugged}
+If, while working through this assignment, you discover something in the problem statements
+that needs to be debugged, describe it in the space at the end of the answer sheet. This is
+separate from, and in addition to, your answers.
+
+\subsection*{Where to submit}
+Type your answers in the answer sheet that comes with this task (a Word or OpenDocument
+file), and save it as .docx or .odt. Put it in a folder named \texttt{taskw14} in your GitHub
+repository, and commit it.
+
+\section{Conventions}
+
+These match the lecture and the notes.
+
+\begin{itemize}[leftmargin=1.4em]
+  \item The hash function is $h(x) = x \bmod m$, where $m$ is the table size. Every slot
+    number below is taken mod $m$.
+  \item \textbf{Linear probing:} probe $i$ checks slot $h(x) + i$.
+  \item \textbf{Quadratic probing:} probe $i$ checks slot $h(x) + i^2$.
+  \item \textbf{Double hashing:} probe $i$ checks slot $h(x) + i \cdot h_2(x)$, where
+    $h_2(x) = 7 - (x \bmod 7)$.
+  \item \textbf{Separate chaining:} each key goes at the \textbf{end} of chain $h(x)$.
+  \item \textbf{Counting probes:} every slot you check counts as one probe, including the
+    first. For a search in an open-addressing table, the search stops at the key or at the
+    first empty slot.
+  \item \textbf{A key that cannot be placed:} if every slot its probe sequence can reach is
+    full, leave it out of the table, write \emph{not placed}, and go on to the next key.
+  \item \textbf{Deleted slots:} a removed key's slot is marked DEL, not left empty.
+  \item \textbf{Load factor:} $\alpha$ is the number of keys actually in the table divided by
+    the table size.
+\end{itemize}
+
+% ============================================================
+\section{Problem 1: Trace It}
+
+Insert these nine keys, in this order, into a table of size $m = 13$:
+
+\begin{center}
+93, \ 61, \ 51, \ 37, \ 60, \ 68, \ 38, \ 90, \ 89
+\end{center}
+
+\begin{enumerate}[label=(\alph*), leftmargin=1.8em]
+  \item Build the final table four times: with linear probing, with quadratic probing, with
+    double hashing, and with separate chaining. For each of the three open-addressing tables,
+    also give the number of probes each insert used (write \emph{not placed} where a key could
+    not be placed).
+  \item Give the load factor $\alpha$ of each of the four tables.
+  \item Go back to your \textbf{linear probing} table. Remove 93 by marking its slot as
+    \emph{deleted}, not empty. To mark a slot as deleted, write \textbf{DEL} in it. A DEL slot
+    holds no key, but it is not empty: it records that a key used to be there. (This is the same
+    idea as the \texttt{DELETED} marker you will use in the lab.) On the answer sheet, show the
+    table after removing 93 and again after inserting 41 in part (iii).
+    \begin{enumerate}[label=(\roman*), leftmargin=1.6em]
+      \item Search for 89. How many probes does the search take?
+      \item Suppose the removal had set 93's slot to \emph{empty} instead. What would the
+        search for 89 report, and why is that wrong?
+      \item Now insert 41. Which slot does it go in? How many slots must you check before you
+        can be sure 41 is not already in the table, and why can you not stop at the first
+        deleted slot?
+    \end{enumerate}
+\end{enumerate}
+
+% ============================================================
+\section{Problem 2: Find the Mistakes}
+
+Jordan inserted these eight keys, in this order, into a table of size $m = 11$, using the same
+conventions as above:
+
+\begin{center}
+44, \ 39, \ 43, \ 97, \ 38, \ 40, \ 76, \ 10
+\end{center}
+
+Jordan's work is below. It contains \textbf{exactly five mistakes}: one in each of the four
+tables, and one in the probe counts. For each mistake, say where it is, explain what Jordan did
+wrong, and give the correct result. Then give the corrected version of each table.
+
+\begin{inlinefig}
+\captionof{table}{Jordan's three open-addressing tables. A dash means the slot is empty.}
+\label{tab:jordan}
+\small\renewcommand{\arraystretch}{1.25}\setlength{\tabcolsep}{5pt}
+\begin{tabular}{l c c c c c c c c c c c}
+\toprule
+\textbf{Slot} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} &
+\textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} \\
+\midrule
+\textbf{Linear} & 44 & 76 & -- & -- & -- & 38 & 39 & 40 & -- & 97 & 43 \\
+\textbf{Quadratic} & 44 & 10 & -- & 76 & -- & 38 & 39 & 40 & -- & 97 & 43 \\
+\textbf{Double hashing} & 44 & 76 & 10 & -- & -- & 38 & 39 & 40 & -- & 97 & 43 \\
+\bottomrule
+\end{tabular}
+\end{inlinefig}
+
+Under the linear probing table, Jordan wrote: ``10 could not be placed, because its home slot
+is the last slot in the table and it is full.''
+
+\begin{inlinefig}
+\captionof{table}{Jordan's separate chaining table. Chains that are not listed are empty.}
+\label{tab:jordanchain}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{c l}
+\toprule
+\textbf{Chain} & \textbf{Keys, first to last} \\
+\midrule
+0 & 44 \\
+5 & 38 \\
+6 & 39 \\
+7 & 40 \\
+8 & 97 \\
+10 & 43, 76, 10 \\
+\bottomrule
+\end{tabular}
+\end{inlinefig}
+
+\begin{inlinefig}
+\captionof{table}{Jordan's probe counts for successful searches in the linear probing table.}
+\label{tab:jordanprobes}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{c c}
+\toprule
+\textbf{Key searched for} & \textbf{Probes} \\
+\midrule
+44 & 1 \\
+43 & 1 \\
+76 & 2 \\
+38 & 1 \\
+\bottomrule
+\end{tabular}
+\end{inlinefig}
+
+% ============================================================
+\section{Problem 3: Predict and Justify}
+
+For each part, make your prediction first and explain your reasoning. You may then check it by
+working it out.
+
+\begin{enumerate}[label=(\alph*), leftmargin=1.8em]
+  \item The keys are the 30 multiples of 10 from 10 to 300 (10, 20, 30, \dots, 300). How many
+    \textbf{different home slots} $h(x)$ do these keys use in a table of size 40? In a table
+    of size 41? Which table would you rather use, and why?
+  \item In a table of size 40, quadratic probing from home slot 16 checks slots
+    $(16 + i^2) \bmod 40$. List $i^2 \bmod 40$ for $i = 0$ through 12. How many different slots
+    can a search from slot 16 ever reach? How many could it reach in a table of size 41, and
+    what does that mean for a table that is more than half full?
+  \item A school gives every student a five-digit ID, and every student admitted this year
+    has an ID starting with 26. A programmer hashes IDs into a table of size 101 using only the
+    first two digits of the ID. Predict what happens, and propose a better hash function. Which
+    property of a good hash function does the programmer's version break?
+\end{enumerate}
+
+% ============================================================
+\section{Problem 4: Use the Formulas Backward}
+
+Use the efficiency formulas from the notes. Show your work, and round load factors to four
+decimal places.
+
+\begin{enumerate}[label=(\alph*), leftmargin=1.8em]
+  \item You expect to store 600 keys with \textbf{linear probing}, and you want an
+    unsuccessful search to take \textbf{3 probes or fewer} on average. What is the largest load
+    factor you can allow? What is the smallest \textbf{prime} table size that meets the goal?
+  \item Repeat (a) for \textbf{double hashing}. Which technique needs less memory for the same
+    goal, and by how many slots?
+  \item You store the same 600 keys with \textbf{separate chaining} in a table of size 211.
+    Give $\alpha$ and the expected probes for a successful and an unsuccessful search. Explain
+    why $\alpha$ can be greater than 1 here but not in (a) or (b).
+  \item Your linear probing table from Problem 1 has size 13. A program grows a table when
+    $\alpha$ goes above $2/3$, and it grows to the smallest prime that is at least twice the old
+    size. Does the Problem 1 table need to grow? If so, what is the new size and the new
+    $\alpha$? Explain why every key must be inserted again with the new $h(x)$ rather than
+    copied to the same slot number, using key 51 as an example.
+\end{enumerate}
+
+% ============================================================
+\section{What to Submit}
+
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{The answer sheet}, saved as .docx or .odt, with all four problems.
+  \item The file in the \texttt{taskw14} folder of your GitHub repository.
+\end{itemize}
+
+\end{document}
